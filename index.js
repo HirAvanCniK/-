@@ -320,4 +320,4 @@ client.on("message", async message => {
     }
 })
 
-client.login(config.token);
+client.login("ODY3NTI2MzkyMTU2MjU4MzI0.YPiY6Q.vnvJJo9pichSty76QTI85DPaorQ");
