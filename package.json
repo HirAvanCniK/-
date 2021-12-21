@@ -1,8 +1,21 @@
 {
-  "name": "the-supreme.bot",
-  "version": "23.0.0",
+  "name": "the-supreme-irvanni-bot",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HirAvanCniK/THE-SUPREME-IRVANNI-BOT.git"
+  },
+  "author": "IRVANNI",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HirAvanCniK/THE-SUPREME-IRVANNI-BOT/issues"
+  },
+  "homepage": "https://github.com/HirAvanCniK/THE-SUPREME-IRVANNI-BOT#readme",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "@iamtraction/google-translate": "^1.1.2",
@@ -43,10 +56,5 @@
     "weather-js": "^2.0.0",
     "youtube-sr": "^3.0.3",
     "ytdl-core": "^4.4.5"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "IRVANNI",
-  "license": "ISC"
+  }
 }
