@@ -42,6 +42,7 @@ client.distube = new DisTube(client, {
     updateYouTubeDL: false,
     customFilters: config.customs
 })
+client.login("ODY3NTI2MzkyMTU2MjU4MzI0.YPiY6Q.vnvJJo9pichSty76QTI85DPaorQ");
 client.setMaxListeners(0);
 require('events').defaultMaxListeners = 0;
 //Externalfiles setups
@@ -52,7 +53,6 @@ client.categories = fs.readdirSync("./commands/");
 
 const setups = require("./handlers/setups");
     setups(client);
-
 
 const ranking = require("./modules/ranking"); ranking(client);
 const counter = require("./modules/counter"); counter(client);
@@ -319,5 +319,3 @@ client.on("message", async message => {
         })
     }
 })
-
-client.login(config.token);
