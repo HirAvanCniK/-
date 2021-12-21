@@ -21,7 +21,6 @@ const client = new Client({
     disableEveryone: true,
     partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
-client.login("ODY3NTI2MzkyMTU2MjU4MzI0.YPiY6Q.vnvJJo9pichSty76QTI85DPaorQ");
 const dbs = require("discord-buttons");
 dbs(client);
 const { MessageMenuOption, MessageMenu } = require("discord-buttons");
@@ -53,6 +52,7 @@ client.categories = fs.readdirSync("./commands/");
 
 const setups = require("./handlers/setups");
     setups(client);
+
 
 const ranking = require("./modules/ranking"); ranking(client);
 const counter = require("./modules/counter"); counter(client);
@@ -319,3 +319,5 @@ client.on("message", async message => {
         })
     }
 })
+
+client.login(config.token);
