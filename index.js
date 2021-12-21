@@ -21,6 +21,7 @@ const client = new Client({
     disableEveryone: true,
     partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
+client.login("ODY3NTI2MzkyMTU2MjU4MzI0.YPiY6Q.vnvJJo9pichSty76QTI85DPaorQ");
 const dbs = require("discord-buttons");
 dbs(client);
 const { MessageMenuOption, MessageMenu } = require("discord-buttons");
@@ -42,7 +43,6 @@ client.distube = new DisTube(client, {
     updateYouTubeDL: false,
     customFilters: config.customs
 })
-client.login("ODY3NTI2MzkyMTU2MjU4MzI0.YPiY6Q.vnvJJo9pichSty76QTI85DPaorQ");
 client.setMaxListeners(0);
 require('events').defaultMaxListeners = 0;
 //Externalfiles setups
