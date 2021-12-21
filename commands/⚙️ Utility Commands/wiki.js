@@ -31,7 +31,7 @@ module.exports = {
             .setDescription([`
             ${response.extract}
             Links For Topic You Searched [Link](${response.content_urls.desktop.page}).`])
-            .setFooter("Milrato | powered by milrato.eu", client.user.displayAvatarURL())
+            .setFooter("The Supreme Bot | powered by IRVANNI", client.user.displayAvatarURL())
             message.channel.send(embed)
         }
         else { // If Only One Result
@@ -41,7 +41,7 @@ module.exports = {
             try{embed.setURL(response.content_urls.desktop.page)}catch{} // URL Of Searched Topic
             try{embed.setThumbnail(response.thumbnail.source)}catch(e){console.log(e)}
             try{embed.setDescription(response.extract)}catch{}
-            try{embed.setFooter("Milrato | powered by milrato.eu", client.user.displayAvatarURL())}catch{}
+            try{embed.setFooter("The Supreme Bot | powered by IRVANNI", client.user.displayAvatarURL())}catch{}
             message.channel.send(embed)
         }
     }

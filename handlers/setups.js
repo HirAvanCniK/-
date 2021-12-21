@@ -341,41 +341,6 @@ module.exports = (client) => {
         }
        
     });
-    // Requires Manager from discord-giveaways
-    const { GiveawaysManager } = require('discord-giveaways');
-    // Starts updating currents giveaways
-    const manager = new GiveawaysManager(client, {
-        storage: './giveaways.json',
-        updateCountdownEvery: 10000,
-        hasGuildMembersIntent: false,
-        default: {
-            botsCanWin: false,
-            exemptPermissions: ['MANAGE_MESSAGES', 'ADMINISTRATOR'],
-            embedColor: config.colors.yes,
-            reaction: '🎉',
-            messages: {
-                giveaway: '🎉🎉 **GIVEAWAY** 🎉🎉',
-                giveawayEnded: '🎉🎉 **GIVEAWAY ENDED** 🎉🎉',
-                timeRemaining: 'Time remaining: **{duration}**!',
-                inviteToParticipate: 'React with 🎉 to participate!',
-                winMessage: 'Congratulations, {winners}! You won **{prize}**!\n{messageURL}',
-                embedFooter: 'Giveaways',
-                noWinner: 'Giveaway cancelled, no valid participations.',
-                hostedBy: 'Hosted by: {user}',
-                winners: 'winner(s)',
-                endedAt: 'Ended at',
-                units: {
-                    seconds: 'Seconds',
-                    minutes: 'Minutes',
-                    hours: 'Hours',
-                    days: 'Days',
-                    pluralS: false // Not needed, because units end with a S so it will automatically removed if the unit value is lower than 2
-                }
-            }
-        }
-    });
-    // We now have a giveawaysManager property to access the manager everywhere!
-    client.giveawaysManager = manager;
 
     console.log("Setups Loaded".brightGreen)
 }

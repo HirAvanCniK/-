@@ -14,6 +14,8 @@ module.exports = {
         if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send('Non disponi delle autorizzazioni per utilizzare questo comando.')
         const Member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
         if (!Member) return message.channel.send('Il membro non è stato trovato.')
+        if (Member.id == "536798044939878403") return message.reply("L'utente selezionato è il mio creatore non potrei mai mutarlo.");
+        if (Member.id == "867526392156258324") return message.reply("Ops non posso mutarmi da solo.")
         const role = message.guild.roles.cache.find(role => role.name.toLowerCase() === 'muted')
         if (!role) {
             try {

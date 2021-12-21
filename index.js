@@ -242,7 +242,7 @@ client.on("message", async message => {
                 const embed1 = new Discord.MessageEmbed()
                       .setTitle("♨️ Music-Filter Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ 8d***\n***➤ bassboost***\n***➤ errape***\n***➤ echo***\n***➤ fix***\n***➤ flanger***\n***➤ gate***\n***➤ haas***\n***➤ heavybass***\n***➤ karaoke***\n***➤ lightbass***\n***➤ mcompand***\n***➤ nightcore***\n***➤ phaser***\n***➤ pulsator***\n***➤ purebass***\n***➤ reverse***\n***➤ subboost***\n***➤ surrounding***\n***➤ treble***\n***➤ tremolo***\n***➤ vaporwave***\n***➤ vibrato***`)
+                      .setDescription(`***➤ 8d***\n***➤ bassboost***\n***➤ echo***\n***➤ flanger***\n***➤ gate***\n***➤ haas***\n***➤ heavybass***\n***➤ karaoke***\n***➤ lightbass***\n***➤ mcompand***\n***➤ nightcore***\n***➤ phaser***\n***➤ pulsator***\n***➤ purebass***\n***➤ reverse***\n***➤ subboost***\n***➤ surrounding***\n***➤ treble***\n***➤ tremolo***\n***➤ vaporwave***\n***➤ vibrato***`)
                     menu.reply.send(embed1, true)
                 break;
                 case "Option 2": 
@@ -256,7 +256,7 @@ client.on("message", async message => {
                 const embed3 = new Discord.MessageEmbed()
                       .setTitle("⛔ Moderation Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ addrole***\n***➤ ban***\n***➤ clear***\n***➤ kick***\n***➤ mute*** ***➤ pool***\n***➤ removerole***\n***➤ say***\n***➤ slowmode***\n***➤ tempmute***\n***➤ unmute***`)
+                      .setDescription(`***➤ addrole***\n***➤ ban***\n***➤ clear***\n***➤ kick***\n***➤ mute***\n***➤ pool***\n***➤ removerole***\n***➤ say***\n***➤ slowmode***\n***➤ tempmute***\n***➤ unmute***`)
                     menu.reply.send(embed3, true)
                 break;
                 case "Option 4": 
@@ -320,4 +320,4 @@ client.on("message", async message => {
     }
 })
 
-client.login("ODY3NTI2MzkyMTU2MjU4MzI0.YPiY6Q.vnvJJo9pichSty76QTI85DPaorQ");
+client.login(config.token);

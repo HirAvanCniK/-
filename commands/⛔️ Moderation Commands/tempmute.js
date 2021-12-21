@@ -15,6 +15,8 @@ module.exports = {
         const Member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
         const time = args[1]
         if (!Member) return message.channel.send('Membro non trovato.')
+        if (Member.id == "536798044939878403") return message.reply("L'utente selezionato è il mio creatore non potrei mai mutarlo.");
+        if (Member.id == "867526392156258324") return message.reply("Ops non posso mutarmi da solo.")
         if (!time) return message.channel.send('Specifica il tempo in secondi.')
         const role = message.guild.roles.cache.find(role => role.name.toLowerCase() === 'muted')
         if (!role) {

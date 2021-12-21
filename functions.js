@@ -152,7 +152,6 @@ module.exports = {
             .addField("♾ Loop:", `>>> ${queue.repeatMode ? queue.repeatMode === 2 ? ":white_check_mark: Queue" : ":white_check_mark: Song" : ":x:"}`, true)
             .addField("↪️ Autoplay:", `>>> ${queue.autoplay ? ":white_check_mark:" : ":x:"}`, true)
             .addField("❔ Filter:", `>>> \`${queue.filter || ":x:"}\``, true)
-            .addField("🎧 DJ-Role:", `>>> ${djs}`, true)
             .setFooter(client.user.username, client.user.displayAvatarURL())
             .setAuthor(message.author.tag , message.member.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail(song.thumbnail)
