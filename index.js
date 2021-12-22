@@ -25,7 +25,7 @@ const TicTacToe = require('discord-tictactoe');
 const game = new TicTacToe({ language: 'it' })
 
 client.on('message', message => {
-    if (message.content.startsWith(`${config.prefix}tris`)) {
+    if (message.content.startsWith(`${config.prefix}tris`) || message.content.startsWith(`${config.prefix}tictactoe`)) {
         game.handleMessage(message);
     }
 });
@@ -148,7 +148,7 @@ client.on("message", async message => {
               const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
           
               if (now < expirationTime) {
-                const timeLeft = (expirationTime - now) / 500;
+                const timeLeft = (expirationTime - now) / 200;
                 return message.reply(
                   `Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`
                 );
@@ -264,14 +264,14 @@ client.on("message", async message => {
                 const embed3 = new Discord.MessageEmbed()
                       .setTitle("⛔ Moderation Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ addrole***\n***➤ ban***\n***➤ clear***\n***➤ kick***\n***➤ mute***\n***➤ pool***\n***➤ removerole***\n***➤ say***\n***➤ slowmode***\n***➤ tempmute***\n***➤ unmute***`)
+                      .setDescription(`***➤ addrole***\n***➤ ban***\n***➤ clear***\n***➤ kick***\n***➤ mute***\n***➤ pool***\n***➤ removerole***\n***➤ slowmode***\n***➤ tempmute***\n***➤ unmute***`)
                     menu.reply.send(embed3, true)
                 break;
                 case "Option 4": 
                 const embed4 = new Discord.MessageEmbed()
                       .setTitle("🎮 Game Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ battle-ship***\n***➤ hangman***\n***➤ snake***\n***➤ titactoe***`)
+                      .setDescription(`***➤ battle-ship***\n***➤ hangman***\n***➤ titactoe***`)
                     menu.reply.send(embed4, true)
                 break;
                 case "Option 5": 
@@ -292,7 +292,7 @@ client.on("message", async message => {
                 const embed7 = new Discord.MessageEmbed()
                       .setTitle("👻 Fun Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ 8ball***\n***➤ affect***\n***➤ beautiful***\n***➤ bed***\n***➤ blur***\n***➤ burn***\n***➤ changemymind***\n***➤ circle***\n***➤ convolute***\n***➤ delete***\n***➤ distracted***\n***➤ facepalm***\n***➤ fuse***\n***➤ gif***\n***➤ hack***\n***➤ hitler***\n***➤ invert***\n***➤ jail***\n***➤ kiss***\n***➤ meme***\n***➤ ohno***\n***➤ phub***\n***➤ pokemon***\n***➤ rip***\n***➤ shit***\n***➤ stonks***\n***➤ time***\n***➤ trash***\n***➤ trigger***\n***➤ trivia***\n***➤ wanted***\n***➤ wasted***\n***➤ weather***`)
+                      .setDescription(`***➤ 8ball***\n***➤ affect***\n***➤ beautiful***\n***➤ bed***\n***➤ blur***\n***➤ burn***\n***➤ changemymind***\n***➤ circle***\n***➤ convolute***\n***➤ delete***\n***➤ distracted***\n***➤ facepalm***\n***➤ fuse***\n***➤ gif***\n***➤ hack***\n***➤ hitler***\n***➤ invert***\n***➤ jail***\n***➤ kiss***\n***➤ meme***\n***➤ ohno***\n***➤ phub***\n***➤ pokemon***\n***➤ rip***\n***➤ say***\n***➤ shit***\n***➤ stonks***\n***➤ time***\n***➤ trash***\n***➤ trigger***\n***➤ trivia***\n***➤ wanted***\n***➤ wasted***\n***➤ weather***`)
                     menu.reply.send(embed7, true)
                 break;
                 case "Option 8": 

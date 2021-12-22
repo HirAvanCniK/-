@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const config = require("../../config.json")
 module.exports = {
     name: "say",
-    category: "⛔️ Moderation Commands",
+    category: "👻 Fun Commands",
     description: "Says text",
     usage: "say TEXT",
     run: async (client, message, args) => {
