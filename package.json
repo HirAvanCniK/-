@@ -1,7 +1,7 @@
 {
   "name": "the-supreme-bot",
   "version": "23.0.0",
-  "engines":{
+  "engines": {
     "node": "^16.13.1",
     "npm": "^8.3.0"
   },
@@ -22,6 +22,7 @@
     "discord-buttons": "^4.0.0",
     "discord-canvas": "^1.4.1",
     "discord-gifs": "^1.3.7",
+    "discord-tictactoe": "^2.2.0",
     "discord.js": "^12.5.3",
     "discord.js-pagination": "^1.0.3",
     "distube": "^2.8.15",
@@ -35,7 +36,7 @@
     "officegen": "^0.6.4",
     "process": "^0.11.10",
     "random-puppy": "^1.1.0",
-    "reconlx": "^1.3.51",
+    "reconlx": "^1.4.511",
     "request-promise-native": "^1.0.9",
     "sequelize": "^6.12.0",
     "snakecord": "^1.0.9",
