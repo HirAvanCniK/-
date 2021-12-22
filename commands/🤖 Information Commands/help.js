@@ -4,6 +4,6 @@ module.exports = {
     description: "list of all commands",
     usage: "help",
     run : async(client, message, args) => {
-
+        console.log("Comando help riuscito.");
     }
 }
