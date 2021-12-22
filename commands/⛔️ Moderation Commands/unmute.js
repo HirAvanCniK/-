@@ -18,7 +18,7 @@ module.exports = {
         const role = message.guild.roles.cache.find(r => r.name.toLowerCase() === 'muted');
 
         await Member.roles.remove(role)
-
+        if (!Member.roles.cache.has(`${role.id}`)) return message.channel.send(`${Member.displayName} non è mutato.`)
         message.channel.send(`${Member.displayName} è ora smutato.`)
     }
 }

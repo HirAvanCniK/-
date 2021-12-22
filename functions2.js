@@ -18,7 +18,7 @@ module.exports = {
         return target;
     },
     formatDate: function(date) {
-        return new Intl.DateTimeFormat('en-US').format(date)
+        return new Intl.DateTimeFormat('it-IT').format(date)
     },
     promptMessage: async function (message, author, time, validReactions) {
         time *= 1000;
@@ -116,9 +116,9 @@ module.exports = {
             .addField("⏱ Duration:", `>>> \`${queue.formattedCurrentTime} / ${song.formattedDuration}\``, true)
             .addField("🌀 Queue:", `>>> \`${queue.songs.length} song(s) - ${queue.formattedDuration}\``, true)
             .addField("🔊 Volume:", `>>> \`${queue.volume} %\``, true)
-            .addField("♾ Loop:", `>>> ${queue.repeatMode ? queue.repeatMode === 2 ? "<:YES:805375191739662366> Queue" : "<:YES:805375191739662366> Song" : "<:NO:805375191819616266>"}`, true)
-            .addField("↪️ Autoplay:", `>>> ${queue.autoplay ? "<:YES:805375191739662366>" : "<:NO:805375191819616266>"}`, true)
-            .addField("❔ Filter:", `>>> ${queue.filter || "<:NO:805375191819616266>"}`, true)
+            .addField("♾ Loop:", `>>> ${queue.repeatMode ? queue.repeatMode === 2 ? ":white_check_mark: Queue" : ":white_check_mark: Song" : ":x:"}`, true)
+            .addField("↪️ Autoplay:", `>>> ${queue.autoplay ? ":white_check_mark:" : ":x:"}`, true)
+            .addField("❔ Filter:", `>>> ${queue.filter || ":x:"}`, true)
             .setFooter(client.user.username, client.user.displayAvatarURL())
             .setAuthor(message.author.tag , message.member.user.displayAvatarURL({ dynamic: true }))
             .setThumbnail(song.thumbnail)

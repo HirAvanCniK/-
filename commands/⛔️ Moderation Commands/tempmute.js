@@ -11,7 +11,7 @@ module.exports = {
      * @param {Message} message
      */
     run: async (client, message, args) => {
-        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send('Non disponi delle autorizzazioni per utilizzare questo comando.')
+        if (!message.member.hasPermission('MANAGE_MESSAGES', 'ADMINISTRATOR')) return message.channel.send('Non disponi delle autorizzazioni per utilizzare questo comando.')
         const Member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
         const time = args[1]
         if (!Member) return message.channel.send('Membro non trovato.')

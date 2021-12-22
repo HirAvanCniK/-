@@ -11,7 +11,7 @@ module.exports = {
      * @param {Message} message
      */
     run: async (client, message, args) => {
-        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send('Non disponi delle autorizzazioni per utilizzare questo comando.')
+        if (!message.member.hasPermission('MANAGE_MESSAGES', 'ADMINISTRATOR')) return message.channel.send('Non disponi delle autorizzazioni per utilizzare questo comando.')
         const Member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
         if (!Member) return message.channel.send('Il membro non è stato trovato.')
         if (Member.id == "536798044939878403") return message.reply("L'utente selezionato è il mio creatore non potrei mai mutarlo.");
@@ -39,7 +39,7 @@ module.exports = {
             }
         };
         let role2 = message.guild.roles.cache.find(r => r.name.toLowerCase() === 'muted')
-        if (Member.roles.cache.has(role2.id)) return message.channel.send(`${Member.displayName} è già stato mutato.`)
+        if (Member.roles.cache.has(`${role2.id}`)) return message.channel.send(`${Member.displayName} è già stato mutato.`)
         await Member.roles.add(role2)
         message.channel.send(`${Member.displayName} è ora mutato.`)
     }
