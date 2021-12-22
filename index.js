@@ -320,4 +320,13 @@ client.on("message", async message => {
     }
 })
 
+const TicTacToe = require('discord-tictactoe');
+const game = new TicTacToe({ language: 'it' })
+
+client.on('message', message => {
+    if (message.content.startsWith(`${config.prefix}tris`)) {
+        game.handleMessage(message);
+    }
+});
+
 client.login(config.token);
