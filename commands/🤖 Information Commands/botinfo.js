@@ -24,7 +24,6 @@ module.exports = {
       let guilds = client.guilds.cache.map(guild=>guild)
       for(let i = 0; i< guilds.length; i++){
             if(guilds[i].me.voice.channel) connectedchannelsamount += 1;
-            
       }
 
       const botinfo = new Discord.MessageEmbed()

@@ -19,15 +19,6 @@ module.exports = {
         var voiceCount = server.channels.cache.filter(c => c.type == "voice").size
         var region;
         var birthday;
-        if (server.region == "europe") {
-            region = "Europa";
-        }
-        if (server.createdAt.toDateString() == "Thu Dec 17 2020") {
-            birthday = "Giovedì Dicembre 17 2020";
-        }
-        if (server.createdAt.toDateString() == "Sun May 23 2021") {
-            birthday = "Domenica Maggio 23 2021";
-        }
         var embed2 = new Discord.MessageEmbed()
             .setTitle(server.name)
             .setDescription("Tutte le info su questo server")

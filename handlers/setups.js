@@ -276,37 +276,6 @@ module.exports = (client) => {
            })
         
     });
-    const { MessageEmbed } = require("discord.js");
-    const { stripIndents } = require("common-tags");
-    function getAll(client, guild) {    
-        const embed = new MessageEmbed()
-            .setColor(config.colors.yes)
-            .setTitle('Help Menu - THANKS FOR INVITING ME!')
-                .addField("**__BOT BY:__**", `
-                >>> <@536798044939878403> \`𝓗ir𝓐van𝓒ni𝓚#1840\` [\`Website\`](http://irvanni.ga/) [\`INVITE\`](https://discord.com/oauth2/authorize?client_id=867526392156258324&scope=bot&permissions=1095216660215)
-                `)
-                    .addField("**__Music - Supported sources__**", `
-                >>> \`Youtube\`, \`Soundcloud\` [\` And more\`] ...
-                `)
-            .setFooter("To see command descriptions and usage type   ,help [CMD Name]", client.user.displayAvatarURL())
-            
-            const commands = (category) => {
-                return client.commands
-                    .filter(cmd => cmd.category === category)
-                    .map(cmd => `\`${cmd.name}\``)
-                    .join(", ");
-            }
-        
-            const info = client.categories
-                .map(cat => stripIndents`**__${cat[0].toUpperCase() + cat.slice(1)}__** \n> ${commands(cat)}`)
-                .reduce((string, category) => string + "\n\n" + category);
-        let channel = guild.channels.cache.find(
-            channel =>
-              channel.type === "text" &&
-              channel.permissionsFor(guild.me).has("SEND_MESSAGES")
-          );
-         channel.send(embed.setDescription(info.substr(0,1950) + `\`... to see all other cmds type: \`${config.prefix}help\``));
-        }
     client.on('voiceStateUpdate', (oldState,newState) => {
         if(newState.id === client.user.id && oldState.serverDeaf === true && newState.serverDeaf === false)
             {

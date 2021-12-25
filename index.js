@@ -21,14 +21,6 @@ const client = new Client({
     disableEveryone: true,
     partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
-const TicTacToe = require('discord-tictactoe');
-const game = new TicTacToe({ language: 'it' })
-
-client.on('message', message => {
-    if (message.content.startsWith(`${config.prefix}tris`) || message.content.startsWith(`${config.prefix}tictactoe`)) {
-        game.handleMessage(message);
-    }
-});
 const dbs = require("discord-buttons");
 dbs(client);
 const { MessageMenuOption, MessageMenu } = require("discord-buttons");
@@ -271,7 +263,7 @@ client.on("message", async message => {
                 const embed4 = new Discord.MessageEmbed()
                       .setTitle("🎮 Game Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ battle-ship***\n***➤ hangman***\n***➤ titactoe***`)
+                      .setDescription(`***➤ hangman***\n***➤ titactoe***`)
                     menu.reply.send(embed4, true)
                 break;
                 case "Option 5": 
@@ -327,8 +319,5 @@ client.on("message", async message => {
         })
     }
 })
-
-
-
 
 client.login(config.token);
