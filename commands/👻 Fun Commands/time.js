@@ -10,21 +10,40 @@ module.exports = {
         var data = new Date();
         var ora = data.getHours();
         var minuto = data.getMinutes();
+        var giorno;
+        var emoji;
+        if(ora < 12 && ora > 5){
+            giorno = "Buongiorno."
+            emoji = "☀️"
+        }
+        if(ora >= 12 && ora < 18){
+            giorno = "Buon pomeriggio."
+            emoji = "☀️"
+        }
+        if(ora >= 18 && ora < 24){
+            giorno = "Buonasera."
+            emoji = "🌙"
+        }
+        if(ora >= 0 && ora < 5){
+            giorno = "Buonanotte."
+            emoji = "💤" 
+        }
         if(ora >= 10 && minuto >= 10){
-            message.channel.send('Ora attuale :alarm_clock:' + ' ' + ora + ':' + minuto);
+            message.channel.send('Ora attuale ' + emoji + ' ' + ora + ':' + minuto + " " + giorno);
             return;
         }
         if(ora >= 10 && minuto < 10){
-            message.channel.send('Ora attuale :alarm_clock:' + ' ' + ora + ':' + "0" + minuto);
+            message.channel.send('Ora attuale ' + emoji + ' ' + ora + ':' + "0" + minuto + " " + giorno);
             return;
         }
         if(ora < 10 && minuto >= 10){
-            message.channel.send('Ora attuale :alarm_clock:' + ' ' + "0" + ora + ':' + minuto);
+            message.channel.send('Ora attuale ' + emoji + ' ' + "0" + ora + ':' + minuto + " " + giorno);
             return;
         }
         if(ora < 10 && minuto < 10){
-            message.channel.send('Ora attuale :alarm_clock:' + ' ' + "0" + ora + ':' + "0" + minuto);
+            message.channel.send('Ora attuale ' + emoji + ' ' + "0" + ora + ':' + "0" + minuto + " " + giorno);
             return;
         }
+
     }
 }
