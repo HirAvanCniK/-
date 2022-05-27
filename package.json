@@ -43,7 +43,6 @@
     "snakecord": "^1.0.9",
     "soundcloud-downloader": "^1.0.0",
     "spotify-url-info": "^2.2.0",
-    "sqlite3": "^4.2.0",
     "superagent": "^6.1.0",
     "translatte": "^3.0.0",
     "weather-js": "^2.0.0",

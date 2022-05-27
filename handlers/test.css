@@ -298,11 +298,13 @@
 /* Account Section */
 
 .account {
-	background: var(--transparent) box-shadow: none!important;
+	background: var(--transparent);
+	box-shadow: none!important;
 }
 
 .account .btn {
-	background: var(--transparent) box-shadow: none!important;
+	background: var(--transparent);
+	box-shadow: none!important;
 }
 
 .account {
@@ -353,7 +355,8 @@
 }
 
 #voice-connection .btn {
-	background: var(--transparent) box-shadow: none!important;
+	background: var(--transparent);
+	box-shadow: none!important;
 	border: none
 }
 
@@ -659,8 +662,6 @@
 .theme-dark .round-remove-button:hover {
 	background-color: rgba(100, 100, 100, 0.5);
 }
-
-.user-settings-keybinds .keybind-group:hover .remove-keybind {}
 
 /* languages */
 
@@ -1165,7 +1166,8 @@
 /* code blocks */
 
 .theme-dark .message-group .comment .markup pre {
-	background: var(--transparent) border-color: var(--transparent)
+	background: var(--transparent);
+	border-color: var(--transparent)
 }
 
 .theme-dark .message-group .comment .markup pre code::-webkit-scrollbar-track {

@@ -55,11 +55,7 @@ module.exports = {
                  })
                  return;}
             return message.channel.send(embed).then(msg => msg.delete({ timeout: deletetime }));
-        } catch (error) {
-            console.log(error.stack.toString().red)
-            functions.embedbuilder(client,5000, message, "RED", "ERROR: ", "```" + error.toString().substr(0, 100) + "```" + "\n\n**Error got sent to my owner!**")
-            functions.errorbuilder(error.stack.toString().substr(0, 2000))
-        }
+        } catch (error) {}
     },
     errorbuilder: function (error) {
         console.log(error.stack.toString().red)
@@ -103,11 +99,7 @@ module.exports = {
                 embeds.push(embed);
             }
             return embeds;
-        } catch (error) {
-            console.log(error.stack.toString().red)
-            functions.embedbuilder(client, 5000, message, "RED", "ERROR: ", "```" + error.toString().substr(0, 100) + "```" + "\n\n**Error got sent to my owner!**")
-            functions.errorbuilder(error.stack.toString().substr(0, 2000))
-        }
+        } catch (error) {}
     },
     lyricsEmbed: function(client, message, lyrics, song) {
         try {
@@ -125,11 +117,7 @@ module.exports = {
                 embeds.push(embed);
             }
             return embeds;
-        } catch (error) {
-            console.log(error.stack.toString().red)
-            functions.embedbuilder(client, 5000, message, "RED", "ERROR: ", "```" + error.toString().substr(0, 100) + "```" + "\n\n**Error got sent to my owner!**")
-            functions.errorbuilder(error.stack.toString().substr(0, 2000))
-        }
+        } catch (error) {}
     },
     playsongyes: async function(client, message, queue, song) {
         try {
@@ -169,11 +157,7 @@ module.exports = {
                     await playingMessage.react("805375191462707230");
                     await playingMessage.react("805375191307649055");
                 }
-                catch (error) {
-                    functions.embedbuilder(client,5000, message, config.colors.no, "ERROR: ", "```" + error.toString().substr(0, 100) + "```" + "\n\n**Error got sent to my owner!**")
-                    functions. errorbuilder(error.stack.toString().substr(0, 2000))
-                    console.log(error.stack.toString().red);
-                }
+                catch (error) {}
             const filter = (reaction, user) =>
                 ["805375191635066880", "805375191638081588", "805375191487873024", "805375191697719306", "805375191462707230", "805375191307649055"].includes(reaction.emoji.id) && user.id !== message.client.user.id;
     
@@ -258,11 +242,7 @@ module.exports = {
                 }
                 
             })
-        } catch (error) {
-            console.log(error.stack.toString().red)
-            functions.embedbuilder(client,5000, message, config.colors.no, "ERROR: ", "```" + error.toString().substr(0, 100) + "```" + "\n\n**Error got sent to my owner!**")
-            //functions.errorbuilder(error.stack.toString().substr(0, 2000))
-        }
+        } catch (error) {}
     },
     curembed: function (client, message) {
         try {
@@ -290,11 +270,7 @@ module.exports = {
                 .setAuthor(message.author.tag , message.member.user.displayAvatarURL({ dynamic: true }))
                 .setThumbnail(song.thumbnail)
             return embed; //sending the new embed back
-        } catch (error) {
-            console.log(error.stack.toString().red)
-            functions.embedbuilder(5000, message, config.colors.no, "ERROR: ", "```" + error.toString().substr(0, 100) + "```" + "\n\n**Error got sent to my owner!**")
-            functions.errorbuilder(error.stack.toString().substr(0, 2000))
-        }
+        } catch (error) {}
     },
     HelpEmbed: function(client, message) {
         try {

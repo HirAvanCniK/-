@@ -30,7 +30,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
         .setAuthor(
             `Information about the ${client.user.username} Bot`,
-            config.AVATARURL, "https://discord.com/oauth2/authorize?client_id=867526392156258324&scope=bot&permissions=1095216660214"
+            config.AVATARURL, `${config.inviteUrl}`
         )
         .setColor(config.colors.yes)
         .addFields(
@@ -93,9 +93,9 @@ module.exports = {
     `)
     
     .addField("***BOT BY:***", `
-    >>> <@536798044939878403>  \`𝓗ir𝓐van𝓒ni𝓚#1840\` [\`Website\`](http://irvanni.ga/)
+    >>> <@536798044939878403>  \`𝓗ir𝓐van𝓒ni𝓚#1840\` [\`Website\`](https://irvanni.ga/)
     `) .addField("***SUPPORT:***", `
-    >>> [\`Server\`](https://discord.gg/dPywf29rUq) | [\`Invite\`](https://discord.com/oauth2/authorize?client_id=867526392156258324&scope=bot&permissions=1095216660214)
+    >>> [\`Server\`](https://discord.gg/dPywf29rUq) | [\`Invite\`](${config.inviteUrl})
     `).setFooter(client.user.username, config.AVATARURL)
     message.channel.send(embed)
   }

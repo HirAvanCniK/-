@@ -16,7 +16,7 @@ module.exports = {
   .setDescription(`
 > Hello I am **IRVANNI** <@536798044939878403> *(\`𝓗ir𝓐van𝓒ni𝓚#1840\`)*,
 
-> I am a developer of websites, applications or bots etc... [SEE IT](http://irvanni.ga/)
+> I am a developer of websites, applications or bots etc... [SEE IT](https://irvanni.ga/)
 
 > I hope you like my stuff :v: :heart:
 

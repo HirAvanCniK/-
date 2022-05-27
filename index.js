@@ -54,12 +54,8 @@ const setups = require("./handlers/setups");
     setups(client);
 
 
-const ranking = require("./modules/ranking"); ranking(client);
 const counter = require("./modules/counter"); counter(client);
-const chatbot = require("./modules/chatbot"); chatbot(client);
 const jointocreate = require("./modules/jointocreate");jointocreate(client);
-const ticketsystem = require("./modules/simpleticketmodule"); ticketsystem(client); 
-const welcomeleavesytem = require("./modules/welcomeleavesytem"); welcomeleavesytem(client); 
 const membercount = require("./modules/membercount"); membercount(client); 
 const reactionrole = require("./modules/reactionrole"); reactionrole(client); 
 const apply = require("./modules/apply"); apply(client); 
@@ -74,7 +70,6 @@ client.setups = new Enmap({ name: "setups", dataDir: "./databases/setups" });
 client.infos = new Enmap({ name: "infos", dataDir: "./databases/infos" }); 
 client.custom = new Enmap({ name: "custom", dataDir: "./databases/playlist" }); 
 client.custom2 = new Enmap({ name: "custom", dataDir: "./databases/playlist2" }); 
-client.points = new Enmap({ name: "points", dataDir: "./databases/ranking" }); 
 client.reactionrole = new Enmap({ name: "reactionrole", dataDir: "./databases/reactionrole" }); 
 client.apply = new Enmap({ name: "apply", dataDir: "./databases/apply" })
 //registering a command setup
@@ -153,11 +148,7 @@ client.on("message", async message => {
             client.infos.set("global", Number(client.infos.get("global", "cmds")) + 1, "cmds");
             try{
                 command.run(client, message, args, prefix);
-            }catch (error){
-                console.log(error.toString().red)
-                functions.embedbuilder(client,5000, message, "RED", "ERROR: ", "```" + error.toString().substr(0, 100) + "```" + "\n\n**Error got sent to my owner!**")
-                functions.errorbuilder(error.stack.toString().substr(0, 2000))
-            }
+            }catch (error){}
         }
     else
         return message.reply(`Unkown command, try: ${prefix}help`)
@@ -284,7 +275,7 @@ client.on("message", async message => {
                 const embed7 = new Discord.MessageEmbed()
                       .setTitle("👻 Fun Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ 8ball***\n***➤ affect***\n***➤ beautiful***\n***➤ bed***\n***➤ blur***\n***➤ burn***\n***➤ changemymind***\n***➤ circle***\n***➤ convolute***\n***➤ delete***\n***➤ distracted***\n***➤ facepalm***\n***➤ fuse***\n***➤ gif***\n***➤ hack***\n***➤ hitler***\n***➤ invert***\n***➤ jail***\n***➤ kiss***\n***➤ meme***\n***➤ ohno***\n***➤ phub***\n***➤ pokemon***\n***➤ rip***\n***➤ say***\n***➤ shit***\n***➤ stonks***\n***➤ time***\n***➤ trash***\n***➤ trigger***\n***➤ trivia***\n***➤ wanted***\n***➤ wasted***\n***➤ weather***`)
+                      .setDescription(`***➤ 8ball***\n***➤ affect***\n***➤ beautiful***\n***➤ bed***\n***➤ blur***\n***➤ burn***\n***➤ changemymind***\n***➤ circle***\n***➤ convolute***\n***➤ delete***\n***➤ distracted***\n***➤ facepalm***\n***➤ food***\n***➤ fuse***\n***➤ gif***\n***➤ hack***\n***➤ hitler***\n***➤ invert***\n***➤ jail***\n***➤ kiss***\n***➤ meme***\n***➤ ohno***\n***➤ phub***\n***➤ rip***\n***➤ say***\n***➤ shit***\n***➤ stonks***\n***➤ time***\n***➤ trash***\n***➤ trigger***\n***➤ trivia***\n***➤ wanted***\n***➤ wasted***\n***➤ weather***`)
                     menu.reply.send(embed7, true)
                 break;
                 case "Option 8": 
@@ -298,7 +289,7 @@ client.on("message", async message => {
                 const embed9 = new Discord.MessageEmbed()
                       .setTitle("🔞 NSFW Commands")
                       .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ 2danal***\n***➤ 2dboobs***\n***➤ 2dfeet***\n***➤ 2dtits***\n***➤ 2feetgif***\n***➤ anal***\n***➤ ass***\n***➤ bj***\n***➤ blowjob***\n***➤ boobs***\n***➤ cumslut***\n***➤ danbooru***\n***➤ ero***\n***➤ erokitsune***\n***➤ eroyuri***\n***➤ femdom***\n***➤ futanari***\n***➤ gasm***\n***➤ gelbooru***\n***➤ hboobs***\n***➤ hentai***\n***➤ hentaidif***\n***➤ holo***\n***➤ holoero***\n***➤ keta***\n***➤ kitsune***\n***➤ kuni***\n***➤ lewdneko***\n***➤ lewdnekogif***\n***➤ nekoapiclassic***\n***➤ porn***\n***➤ pussy***\n***➤ r34***\n***➤ spank***\n***➤ trap***\n***➤ yuri***`)
+                      .setDescription(`***➤ anal***\n***➤ ass***\n***➤ boobs***\n***➤ feet***\n***➤ futa***\n***➤ gonewild***\n***➤ hass***\n***➤ hboobs***\n***➤ hentai_anal***\n***➤ hkitsune***\n***➤ hmidriff***\n***➤ hthigh***\n***➤ hyuri***\n***➤ neko***\n***➤ paizuri***\n***➤ porn***\n***➤ pussy***\n***➤ swimsuit***\n***➤ tentacle***\n***➤ thigh***`)
                     menu.reply.send(embed9, true)
                 break;
                 case "Option 10": 

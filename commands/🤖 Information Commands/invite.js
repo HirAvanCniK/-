@@ -10,7 +10,7 @@ module.exports = {
         let inviteembed = new Discord.MessageEmbed()
         .setColor(config.colors.yes).setFooter(client.user.username, config.AVATARURL)
         .setTitle("Invite BOTS")
-        .setDescription(`[INVITE ME NOW, thanks](https://discord.com/oauth2/authorize?client_id=867526392156258324&scope=bot&permissions=1095216660214)`)
+        .setDescription(`[INVITE ME NOW, thanks](${config.inviteUrl})`)
         .setFooter(client.user.username, config.AVATARURL)
         
         message.reply(inviteembed);

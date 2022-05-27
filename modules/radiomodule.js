@@ -38,7 +38,7 @@ module.exports = function (client, guildid, voicechannel, radiostation, volume) 
     if(!guild.me.voice.channel) { 
       radioexecuteadmin();
       }
-    }catch(e){console.log("RADIOMODULE:".underline.red + " :: " + e.stack.toString().red)}
+    }catch(e){/*console.log("RADIOMODULE:".underline.red + " :: " + e.stack.toString().red)*/}
   }
 
   //PLAY THE RADIO
@@ -56,6 +56,6 @@ module.exports = function (client, guildid, voicechannel, radiostation, volume) 
           .setVolumeLogarithmic((volume ? Number(volume) : 30) / 100) //change volume to 30%
         }catch{}
         });
-      }catch(e){console.log("RADIOMODULE:".underline.red + " :: " + e.stack.toString().red)}
+      }catch(e){/*console.log("RADIOMODULE:".underline.red + " :: " + e.stack.toString().red)*/}
     }
 }

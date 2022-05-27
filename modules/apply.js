@@ -60,7 +60,7 @@ module.exports = function (client, options) {
           async function send_finished(){
               let embed = new Discord.MessageEmbed().setFooter(message.guild.name, message.guild.iconURL({dynamic:true}))
               .setColor("#fcfc03")
-              .setTitle("A new application from: " + user.tag) //Tomato#6966
+              .setTitle("A new application from: " + user.tag)
               .setDescription(`${user}  |  \`${new Date()}\``)
               .setFooter(user.id, user.displayAvatarURL({dynamic:true}))
               .setTimestamp()

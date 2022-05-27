@@ -245,7 +245,7 @@ ${newMessage.content.replace(/`/g, "'")}
 
 function send(guild, client, color, desc, title){
     try{
-let embed = new MessageEmbed() 
+let embed = new MessageEmbed()
   .setColor(color)
   .setDescription(desc.substr(0, 2000))
   .setTimestamp()
