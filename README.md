@@ -18,7 +18,7 @@ THE-SUPREME-BOT also adds **a new mention** like @everyone and @here, the `@some
 
 ### Many commands
 
-THE-SUPREME-BOT has a lot of features, with **7 main categories**:
+THE-SUPREME-BOT has a lot of features, with **10 main categories**:
 
 *   ♨️ **Music-Filter**: `8d`, `purebass`, `vaporwave`, `subboost`, `vibrato` and **more!**
 *   ⚙️ **Utility**: `avatar`, `sleeptimer`, `translate` and **more!**
