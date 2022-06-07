@@ -3,7 +3,7 @@ const config = require("../../config.json")
 const { version } = require("discord.js");
 module.exports = {
     name: "info",
-    category: "⚙️ Utility Commands",
+    category: "🤖 Information Commands",
     description: "Sends detailed info about the client",
     usage: "info",
   run: async (client, message, args) => {

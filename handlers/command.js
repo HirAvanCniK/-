@@ -1,11 +1,9 @@
 const { readdirSync } = require("fs");
-
+require("colors")
 const config = require("../config.json")
 const ascii = require("ascii-table");
 let table = new ascii("Commands");
 const functions = require("../functions");
-const { id } = require("common-tags");
-const { ReactionUserManager } = require("discord.js");
 table.setHeading("Command", "Load status");
 console.log("Welcome to HANDLER SERVICE // By IRVANNI // Discord: 𝓗ir𝓐van𝓒ni𝓚#1840".brightYellow)
 module.exports = (client) => {
@@ -192,6 +190,4 @@ const guildonlycounter = new Map();
     });
 
     console.log(table.toString().brightCyan);
-    console.log("Welcome to HANDLER SERVICE // By IRVANNI // Discord: 𝓗ir𝓐van𝓒ni𝓚#1840".brightYellow)
-	console.log("Logging into Bot User...".brightGreen);
 }

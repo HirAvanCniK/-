@@ -1,57 +1,36 @@
 {
-  "name": "the-supreme-bot",
-  "version": "23.0.0",
-  "engines": {
-    "node": "^16.13.1",
-    "npm": "^8.3.0"
-  },
+  "name": "the-bot",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
-    "@iamtraction/google-translate": "^1.1.2",
     "@ksoft/api": "^3.1.9",
-    "ascii-table": "0.0.9",
-    "booru": "^2.5.0",
+    "ascii-table": "^0.0.9",
     "canvacord": "^5.0.8",
     "colors": "^1.4.0",
     "common-tags": "^1.8.2",
     "cpu-stat": "^2.0.1",
     "deezer-public-api": "^1.0.4",
-    "discord-battleship": "^1.0.4",
     "discord-buttons": "^4.0.0",
-    "discord-canvas": "^1.4.1",
     "discord-gifs": "^1.3.7",
-    "discord-tictactoe": "^2.2.0",
     "discord.js": "^12.5.3",
     "discord.js-pagination": "^1.0.3",
     "distube": "^2.8.15",
     "enmap": "^5.8.4",
     "ffmpeg-static": "^4.4.0",
-    "got": "^11.8.1",
-    "jimp": "^0.16.1",
-    "mal-scraper": "^2.11.2",
     "math-expression-evaluator": "^1.3.7",
-    "nekos.life": "^2.0.7",
-    "officegen": "^0.6.4",
-    "parse-ms": "^3.0.0",
-    "process": "^0.11.10",
-    "random-puppy": "^1.1.0",
     "reconlx": "^1.4.511",
     "request-promise-native": "^1.0.9",
-    "sequelize": "^6.12.0",
-    "snakecord": "^1.0.9",
     "soundcloud-downloader": "^1.0.0",
     "spotify-url-info": "^2.2.0",
-    "superagent": "^6.1.0",
     "translatte": "^3.0.0",
     "weather-js": "^2.0.0",
-    "youtube-sr": "^3.0.3",
-    "ytdl-core": "^4.4.5"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "IRVANNI",
-  "license": "ISC"
+    "youtube-sr": "^3.0.3"
+  }
 }

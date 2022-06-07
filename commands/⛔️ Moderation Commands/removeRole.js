@@ -1,5 +1,3 @@
-const Discord = require("discord.js")
-
 module.exports = {
     name: "remove-role",
     description: "remove role of a member",

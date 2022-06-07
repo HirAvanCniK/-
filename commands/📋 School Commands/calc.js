@@ -2,7 +2,6 @@ const utils = require('../../utils');
 
 const math = require('math-expression-evaluator');
 const stripIndents = require('common-tags').stripIndents;
-const config = require("../../config.json")
 module.exports = {
   name: "calc",
   aliases: ["calculate"],

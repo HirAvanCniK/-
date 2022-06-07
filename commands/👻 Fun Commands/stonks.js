@@ -1,10 +1,8 @@
 const Canvas = require('canvas');
 const Discord = require(`discord.js`);
-const { Client, Collection, MessageEmbed } = require("discord.js");
 const config = require("../../config.json")
 const path = require("path");
 module.exports = {
-
     name: path.parse(__filename).name,
     category: "👻 Fun Commands",
     useage: `${path.parse(__filename).name} [@User]`,

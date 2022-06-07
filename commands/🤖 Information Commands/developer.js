@@ -1,4 +1,4 @@
-const {MessageEmbed} =require("discord.js")
+const { MessageEmbed } =require("discord.js")
 const config = require("../../config.json")
 module.exports = {
 	name: "developer",
@@ -11,7 +11,7 @@ module.exports = {
 	.setColor(config.colors.yes)
 	.setFooter("🤖𝕋ℍ𝔼 𝕊𝕌ℙℝ𝔼𝕄𝔼 𝔹𝕆𝕋🤖", config.AVATARURL)
   .setTimestamp()
-  .setThumbnail("https://ibb.co/qFRKvyw")
+  .setThumbnail("https://i.ibb.co/Hpr6jFQ/Avatar.png")
   .setTitle("𝓗ir𝓐van𝓒ni𝓚#1840")
   .setDescription(`
 > Hello I am **IRVANNI** <@536798044939878403> *(\`𝓗ir𝓐van𝓒ni𝓚#1840\`)*,

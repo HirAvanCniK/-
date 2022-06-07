@@ -1,5 +1,3 @@
-
-const { MessageEmbed } = require('discord.js');
 const answers = [
     "Maybe.",
     "Certainly Not.",
@@ -31,8 +29,6 @@ const answers = [
     "No, straight up, no!",
 ];
 
-const functions = require("../../functions")
-const config = require("../../config.json")
 module.exports = {
     name: "8ball",
 	aliases: ["8balls"],

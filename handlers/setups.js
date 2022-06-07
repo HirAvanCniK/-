@@ -1,7 +1,4 @@
 const config = require("../config.json")
-console.log("Loading Setups".brightCyan)
-const functions = require("../functions");
-const guildonlycounter = new Map();
 module.exports = (client) => {
    
    let stateswitch = false;
@@ -310,6 +307,4 @@ module.exports = (client) => {
         }
        
     });
-
-    console.log("Setups Loaded".brightGreen)
 }

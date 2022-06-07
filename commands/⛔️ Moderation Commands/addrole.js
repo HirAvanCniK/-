@@ -1,5 +1,3 @@
-const Discord = require("discord.js")
-
 module.exports = {
     name: "add-role",
     description: "add role of a member",

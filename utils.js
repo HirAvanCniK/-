@@ -1,7 +1,4 @@
-const client = require('./index');
-const MessageEmbed = require('discord.js').MessageEmbed;
-const got = require('got');
-const url = require('url');
+const { MessageEmbed } = require('discord.js');
 
 exports.randomSelection = (choices) => {
     return choices[Math.floor(Math.random() * choices.length)];

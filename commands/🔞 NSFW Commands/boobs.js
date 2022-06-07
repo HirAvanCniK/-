@@ -1,4 +1,3 @@
-const superagent = require("node-fetch");
 const Discord = require('discord.js')
 
 const rp = require('request-promise-native');

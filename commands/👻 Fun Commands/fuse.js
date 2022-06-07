@@ -1,5 +1,4 @@
-const Canvas = require('canvas');
-const { Client, Collection, MessageEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const config = require("../../config.json")
 const Discord = require(`discord.js`);
 const canvacord = require("canvacord");

@@ -1,10 +1,8 @@
-const Canvas = require('canvas');
 const { MessageEmbed } = require('discord.js');
 const Discord = require(`discord.js`);
 
 const canvacord = require("canvacord");
 
-const functions = require("../../functions")
 const config = require("../../config.json")
 module.exports = {
   name: "beautiful",

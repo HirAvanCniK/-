@@ -1,6 +1,4 @@
-
-const fetch = require("node-fetch");
-const { Client, Collection, MessageEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const config = require("../../config.json")
 const rgif = require("discord-gifs");
 const path = require("path");

@@ -1,4 +1,4 @@
-
+require("colors")
 module.exports = function (client, guildid, voicechannel, radiostation, volume) {
   const description = {
     name: "radio module",
@@ -9,7 +9,7 @@ module.exports = function (client, guildid, voicechannel, radiostation, volume) 
   console.log(` :: ⬜️ Module: ${description.name} | Loaded version ${description.version} from ("${description.filename}")`.bold.green)
 
   client.on("ready", () => {
-    console.log(`${client.user.tag} is now online`); // log to console
+    console.log(`${client.user.tag} is now online`.brightBlue); // log to console
     radioexecuteadmin(); //start the radio
     setInterval(() => {
         check(); 

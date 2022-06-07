@@ -1,6 +1,3 @@
-const config = require("../config.json");
-const { MessageEmbed } = require("discord.js");
-const fetch = require("node-fetch");
 module.exports = function (client, options) {
     const description = {
         name: "membercount",

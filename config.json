@@ -1,7 +1,7 @@
 {
   "token": "token",
   "prefix": "$",
-  "inviteUrl": "inviteURL",
+  "inviteUrl": "invite_url",
   "ksoftapi": "",
   "cookie": "",
   "customs": {
@@ -49,7 +49,7 @@
     "earrape": "bass=g=50"
   },
 
-  "AVATARURL": "https://i.ibb.co/yQg3kQD/image-logo-bot.webp",
+  "AVATARURL": "logo_avatar",
 
   "colors": {
     "yes" : "#4800ff",
