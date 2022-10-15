@@ -14,7 +14,7 @@ module.exports = {
         if (!channel) return;
         const canvas = Canvas.createCanvas(700, 394);
         const ctx = canvas.getContext('2d');
-        const background = await Canvas.loadImage('stonks.png');
+        const background = await Canvas.loadImage('images/stonks.png');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
         ctx.beginPath();
         ctx.arc(160, 95, 70, 0, Math.PI * 2, true);//position of img
@@ -22,13 +22,13 @@ module.exports = {
         ctx.clip();
         const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'png' }));
         ctx.drawImage(avatar, 85, 20, 150, 150);
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'stonks-image.png');
+        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'stonks.png');
         let fastembed2 = new Discord.MessageEmbed()
          
         .setColor(config.colors.yes).setFooter(client.user.username, config.AVATARURL).setFooter(client.user.username, config.AVATARURL)
         .setTimestamp()
-        .setFooter(BOTNAME, AVATARURL)
-        .setImage("attachment://stonks-image.png")
+        .setFooter(client.user.username, config.AVATARURL)
+        .setImage("attachment://stonks.png")
         .attachFiles(attachment)
         const b = await message.channel.send(fastembed2);
     }

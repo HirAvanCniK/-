@@ -49,7 +49,7 @@ module.exports = {
                 `Non disponi delle autorizzazioni per utilizzare questo comando. ${message.author.username}`
             )
         
-        if (!args[0]) {
+        if (!args[0]){
             return message.reply(`Inserisci un numero!!!`).then(msg => {
                 msg.delete({ timeout: 10000 })
             })

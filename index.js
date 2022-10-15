@@ -231,70 +231,70 @@ client.on("message", async message => {
                 case "Option 1":
                 const embed1 = new Discord.MessageEmbed()
                       .setTitle("♨️ Music-Filter Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ 8d***\n***➤ bassboost***\n***➤ echo***\n***➤ flanger***\n***➤ gate***\n***➤ haas***\n***➤ heavybass***\n***➤ karaoke***\n***➤ lightbass***\n***➤ mcompand***\n***➤ nightcore***\n***➤ phaser***\n***➤ pulsator***\n***➤ purebass***\n***➤ reverse***\n***➤ subboost***\n***➤ surrounding***\n***➤ treble***\n***➤ tremolo***\n***➤ vaporwave***\n***➤ vibrato***`)
                     menu.reply.send(embed1, true)
                 break;
                 case "Option 2": 
                 const embed2 = new Discord.MessageEmbed()
                       .setTitle("⚙️ Utility Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ avatar***\n***➤ sleeptimer***\n***➤ translate***\n***➤ wiki***`)
                     menu.reply.send(embed2, true)
                 break;
                 case "Option 3": 
                 const embed3 = new Discord.MessageEmbed()
                       .setTitle("⛔ Moderation Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ addrole***\n***➤ ban***\n***➤ clear***\n***➤ kick***\n***➤ mute***\n***➤ pool***\n***➤ removerole***\n***➤ slowmode***\n***➤ tempmute***\n***➤ unmute***`)
                     menu.reply.send(embed3, true)
                 break;
                 case "Option 4": 
                 const embed4 = new Discord.MessageEmbed()
                       .setTitle("🎮 Game Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
-                      .setDescription(`***➤ hangman***\n***➤ rps***\n***➤ titactoe***`)
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setDescription(`***➤ hangman***\n***➤ titactoe***`)
                     menu.reply.send(embed4, true)
                 break;
                 case "Option 5": 
                 const embed5 = new Discord.MessageEmbed()
                       .setTitle("🎶 Music Commmands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ addrelated***\n***➤ autoplay***\n***➤ botplaylist***\n***➤ custom***\n***➤ forward***\n***➤ jump***\n***➤ loop***\n***➤ lyrics***\n***➤ mycustom***\n***➤ nowplaying***\n***➤ pause***\n***➤ play***\n***➤ playskip***\n***➤ queue***\n***➤ radio***\n***➤ replay***\n***➤ resume***\n***➤ rewind***\n***➤ search***\n***➤ searchrelated***\n***➤ searchsc***\n***➤ seek***\n***➤ shuffle***\n***➤ skip***\n***➤ status***\n***➤ stop***\n***➤ volume***`)
                     menu.reply.send(embed5, true)
                 break;
                 case "Option 6": 
                 const embed6 = new Discord.MessageEmbed()
                       .setTitle("👑 Creator Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ shutdown***`)
                     menu.reply.send(embed6, true)
                 break;
                 case "Option 7": 
                 const embed7 = new Discord.MessageEmbed()
                       .setTitle("👻 Fun Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ 8ball***\n***➤ affect***\n***➤ beautiful***\n***➤ bed***\n***➤ blur***\n***➤ burn***\n***➤ changemymind***\n***➤ circle***\n***➤ convolute***\n***➤ delete***\n***➤ distracted***\n***➤ facepalm***\n***➤ food***\n***➤ fuse***\n***➤ gif***\n***➤ hack***\n***➤ hitler***\n***➤ invert***\n***➤ jail***\n***➤ kiss***\n***➤ meme***\n***➤ ohno***\n***➤ phub***\n***➤ rip***\n***➤ say***\n***➤ shit***\n***➤ stonks***\n***➤ time***\n***➤ trash***\n***➤ trigger***\n***➤ trivia***\n***➤ wanted***\n***➤ wasted***\n***➤ weather***`)
                     menu.reply.send(embed7, true)
                 break;
                 case "Option 8": 
                 const embed8 = new Discord.MessageEmbed()
                       .setTitle("📋 School Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ calc***\n***➤ random***`)
                     menu.reply.send(embed8, true)
                 break;
                 case "Option 9": 
                 const embed9 = new Discord.MessageEmbed()
                       .setTitle("🔞 NSFW Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ anal***\n***➤ ass***\n***➤ boobs***\n***➤ feet***\n***➤ futa***\n***➤ gonewild***\n***➤ hass***\n***➤ hboobs***\n***➤ hentai_anal***\n***➤ hkitsune***\n***➤ hmidriff***\n***➤ hthigh***\n***➤ hyuri***\n***➤ neko***\n***➤ paizuri***\n***➤ porn***\n***➤ pussy***\n***➤ swimsuit***\n***➤ tentacle***\n***➤ thigh***`)
                     menu.reply.send(embed9, true)
                 break;
                 case "Option 10": 
                 const embed10 = new Discord.MessageEmbed()
                       .setTitle("🤖 Information Commands")
-                      .setFooter(`To see command descriptions and information, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
+                      .setFooter(`To see command descriptions and inforamtion, type: ${config.prefix}help [CMD NAME]`, client.user.displayAvatarURL())
                       .setDescription(`***➤ botinfo***\n***➤ developer***\n***➤ help***\n***➤ info***\n***➤ invite***\n***➤ ping***\n***➤ roleinfo***\n***➤ serverinfo***\n***➤ support***\n***➤ uptime***\n***➤ userinfo***`)
                     menu.reply.send(embed10, true)
                 break;

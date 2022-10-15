@@ -4,7 +4,6 @@ module.exports = {
     description: "Says text",
     usage: "say TEXT",
     run: async (client, message, args) => {
-        if (!message.member.hasPermission(["VIEW_AUDIT_LOG"])) return message.reply(`**${message.author.username}**, you dont have the missing permissions!`)
         if(!args) return message.reply("ADD SOMETHING TO SAY");
         message.channel.send(args.join(" ")).then(msg =>{
             try{

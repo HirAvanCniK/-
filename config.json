@@ -1,7 +1,7 @@
 {
-  "token": "token",
+  "token": "ODY3NTI2MzkyMTU2MjU4MzI0.GupNuN.IjPQ0dIU_uM8ym6zYRCsSqdHSLwOzmvW3VfWXo",
   "prefix": "$",
-  "inviteUrl": "invite_url",
+  "inviteUrl": "https://discord.com/api/oauth2/authorize?client_id=867526392156258324&permissions=1644971949559&scope=bot",
   "ksoftapi": "",
   "cookie": "",
   "customs": {
@@ -49,7 +49,7 @@
     "earrape": "bass=g=50"
   },
 
-  "AVATARURL": "logo_avatar",
+  "AVATARURL": "https://i.ibb.co/yQg3kQD/image-logo-bot.webp",
 
   "colors": {
     "yes" : "#4800ff",
