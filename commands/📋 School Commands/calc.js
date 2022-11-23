@@ -1,37 +1,41 @@
-const utils = require('../../utils');
+const utils = require("../../utils");
 
-const math = require('math-expression-evaluator');
-const stripIndents = require('common-tags').stripIndents;
+const math = require("math-expression-evaluator");
+const stripIndents = require("common-tags").stripIndents;
 module.exports = {
   name: "calc",
-  aliases: ["calculate"],
   category: "📋 School Commands",
-  description: "Calcola un'equazione matematica",
-  usage: "[command | input]",
+  description: "Calculate a mathematical equation",
+  usage: "calc <operation>",
   run: async (client, message, args) => {
-  //command
-  
-  if(args.length < 1)
-  return message.reply(`Devi fornire un'equazione da risolvere sulla calcolatrice`);
+    //command
 
-const question = args.join(' ');
+    if (args.length < 1)
+      return message.reply(
+        `You must provide an equation to solve on the calculator`
+      );
 
-let answer;
-if(question.indexOf('9 + 10') > -1) {
-  answer = '21';
-} else {
-  try {
-      answer = math.eval(question);
-  } catch (err) {
-      message.channel.send(`Equazione matematica non valida: ${err}`);
-  }
-}
+    const question = args.join(" ");
 
-message.channel.send({
-  embed: utils.embed('', stripIndents`
+    let answer;
+    if (question.indexOf("9 + 10") > -1) {
+      answer = "21";
+    } else {
+      try {
+        answer = math.eval(question);
+      } catch (err) {
+        message.channel.send(`Invalid mathematical equation: ${err}`);
+      }
+    }
+
+    message.channel.send({
+      embed: utils.embed(
+        "",
+        stripIndents`
   **Equation:**\n\`\`\`\n${question}\n\`\`\`
   **Answer:**\n\`\`\`\n${answer}\n\`\`\`
-  `)
-});
-  }
-  };
+  `
+      ),
+    });
+  },
+};

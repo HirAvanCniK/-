@@ -17,7 +17,7 @@ module.exports = async function (client, message, args) {
     version: "4.3",
   };
   console.log(
-    ` :: ⬜️ Module: ${description.name} | Loaded version ${description.version} from ("${description.filename}")`
+    ` ➡️ Module: ${description.name}`
       .bold.green
   );
 

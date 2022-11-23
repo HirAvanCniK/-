@@ -1,7 +1,6 @@
 module.exports = {
     name: 'tris',
     category: "🎮 Game Commands",
-    aliases: ["tictactoe"],
     description: "play a famous game tictactoe",
     usage: "tris [user]",
     run : async(client, message, args) => {
