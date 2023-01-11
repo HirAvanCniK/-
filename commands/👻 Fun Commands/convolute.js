@@ -8,30 +8,31 @@ module.exports = {
   category: "👻 Fun Commands",
   usage: `convolute [user]`,
   description: "Image cmd in the style convolute",
-  run: async (client, message, args) => {
-    let tempmsg = await message.channel.send(
-      new MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setAuthor(
-          "Loading...",
-          "https://cdn.discordapp.com/emojis/769935094285860894.gif"
-        )
-    );
-    let user = message.mentions.users.first() || message.author;
+  data:{
+    name: "convolute",
+    description: "Image cmd in the style convolute",
+    options:[
+      {
+        name: "user",
+        description: "The user to convolute",
+        type: "USER",
+        required: true
+      }
+    ]
+  },
+  async execute(interaction){
+    const utente = interaction.options.getUser("user");
+    var user = interaction.guild.members.cache.get(utente.id)
     let avatar = user.displayAvatarURL({ dynamic: false, format: "png" });
     let image = await canvacord.Canvas.convolute(avatar, [69, 12], false);
     let attachment = await new Discord.MessageAttachment(
       image,
       "convolute.png"
     );
-    let fastembed2 = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(config.colors.yes)
-      .setFooter(client.user.username, config.AVATARURL)
       .setImage("attachment://convolute.png")
-      .attachFiles(attachment)
-      .setFooter(client.user.username, config.AVATARURL);
-    await message.channel.send(fastembed2);
-    await tempmsg.delete(); //clyde
-  },
-};
+
+    interaction.reply({embeds: [embed], files: [attachment]})
+  }
+}

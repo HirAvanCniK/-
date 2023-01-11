@@ -8,32 +8,40 @@ const path = require("path");
 module.exports = {
   name: "bed",
   category: "👻 Fun Commands",
-  usage: `bed [user]`,
+  usage: `bed [user] [user]`,
   description: "Image cmd in the style bed",
-  run: async (client, message, args) => {
-    let tempmsg = await message.channel.send(
-      new MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setAuthor(
-          "Loading...",
-          "https://cdn.discordapp.com/emojis/769935094285860894.gif"
-        )
-    );
-    let user = message.mentions.users.first() || message.author;
-    let user2 = message.mentions.users.last() || message.author;
+  data:{
+    name: "bed",
+    description: "Image cmd in the style bed",
+    options:[
+      {
+        name: "user_1",
+        description: "The first user to bed",
+        type: "USER",
+        required: true
+      },
+      {
+        name: "user_2",
+        description: "The second user to bed",
+        type: "USER",
+        required: true
+      }
+    ]
+  },
+  async execute(interaction){
+    const utente_1 = interaction.options.getUser("user_1");
+    const utente_2 = interaction.options.getUser("user_2");
+    var user = interaction.guild.members.cache.get(utente_1.id)
+    var user2 = interaction.guild.members.cache.get(utente_2.id)
     if (user === user2) user2 = message.author;
     let avatar = user.displayAvatarURL({ dynamic: false, format: "png" });
     let avatar2 = user2.displayAvatarURL({ dynamic: false, format: "png" });
     let image = await canvacord.Canvas.bed(avatar, avatar2);
     let attachment = await new Discord.MessageAttachment(image, "bed.png");
-    let fastembed2 = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(config.colors.yes)
-      .setFooter(client.user.username, config.AVATARURL)
       .setImage("attachment://bed.png")
-      .attachFiles(attachment)
-      .setFooter(client.user.username, config.AVATARURL);
-    await message.channel.send(fastembed2);
-    await tempmsg.delete(); //bed
-  },
-};
+
+    interaction.reply({embeds: [embed], files: [attachment]})
+  }
+}

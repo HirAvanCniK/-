@@ -8,34 +8,40 @@ module.exports = {
   category: "👻 Fun Commands",
   usage: `phub [user] [text]`,
   description: "Image cmd in the style phub",
-  run: async (client, message, args) => {
-    let tempmsg = await message.channel.send(
-      new MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setAuthor(
-          "Loading...",
-          "https://cdn.discordapp.com/emojis/769935094285860894.gif"
-        )
-    );
-    let user = message.mentions.users.first() || message.author;
-    let messg = args.join(" ");
-    if (user != message.author) messg = args.slice(1).join(" ");
+  data:{
+    name: "phub",
+    description: "Image cmd in the style phub",
+    options:[
+      {
+        name: "user",
+        description: "The user to phub",
+        type: "USER",
+        required: true
+      },
+      {
+        name: "text",
+        description: "The text to phub",
+        type: "STRING",
+        required: false
+      }
+    ]
+  },
+  async execute(interaction){
+    const utente = interaction.options.getUser("user");
+    var user = interaction.guild.members.cache.get(utente.id)
+    var messg = interaction.options.getString("text");
     if (!messg) messg = "NO MESSAGE SET!";
     let avatar = user.displayAvatarURL({ dynamic: false, format: "png" });
     let image = await canvacord.Canvas.phub({
-      username: user.username,
+      username: user.user.username,
       message: messg,
       image: avatar,
     });
     let attachment = await new Discord.MessageAttachment(image, "phub.png");
-    let fastembed2 = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(config.colors.yes)
-      .setFooter(client.user.username, config.AVATARURL)
       .setImage("attachment://phub.png")
-      .attachFiles(attachment)
-      .setFooter(client.user.username, config.AVATARURL);
-    await message.channel.send(fastembed2);
-    await tempmsg.delete(); //phub
-  },
-};
+
+    interaction.reply({embeds: [embed], files: [attachment]})
+  }
+}

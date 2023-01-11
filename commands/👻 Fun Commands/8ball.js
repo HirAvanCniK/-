@@ -33,14 +33,21 @@ module.exports = {
   name: "8ball",
   category: "👻 Fun Commands",
   description: "Answers a Question",
-  usage: "8ball <question>",
-  run: async (client, message, args) => {
-    if (args[0] == null)
-      return message.channel.send("Please provide a Question");
-    return message.reply(
-      args.join(" ").endsWith("?")
-        ? `🎱 ${answers[Math.floor(Math.random() * answers.length)]}`
-        : "🎱 ***That doesn't seems to be a Question! Please try again!***"
-    );
+  usage: "8ball <question>?",
+  data:{
+    name: "8ball",
+    description: "Answers a Question",
+    options:[
+      {
+        name: "question",
+        description: "The question to answer",
+        type: "STRING",
+        required: true
+      }
+    ]
   },
-};
+  execute(interaction){
+    const question = interaction.options.getString("question")
+    return interaction.reply(question.endsWith("?")? `🎱 ${answers[Math.floor(Math.random() * answers.length)]}`: "🎱 ***That doesn't seems to be a Question! Please try again!***");
+  }
+}

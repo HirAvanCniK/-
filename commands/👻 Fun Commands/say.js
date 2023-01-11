@@ -3,14 +3,20 @@ module.exports = {
   category: "👻 Fun Commands",
   description: "Says text",
   usage: "say <text>",
-  run: async (client, message, args) => {
-    if (!args) return message.reply("ADD SOMETHING TO SAY");
-    message.channel.send(args.join(" ")).then((msg) => {
-      try {
-        if (msg.channel.type === "news") msg.crosspost();
-      } catch (error) {
-        console.log(error.stack.toString().red);
+  data:{
+    name: "say",
+    description: "Says text",
+    options:[
+      {
+        name: "text",
+        description: "The text to say",
+        type: "STRING",
+        required: true
       }
-    });
+    ]
   },
-};
+  execute(interaction){
+    const msg = interaction.options.getString("text");
+    interaction.reply(msg)
+  }
+}

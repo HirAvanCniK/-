@@ -5,60 +5,58 @@ const fetch = require('node-fetch');
 module.exports = {
     name: "nsfw",
     category: "🔞 NSFW Commands",
-    usage: "nsfw <category>",
     description: "Show an nsfw",
-    run: async (client, message, args) => {
-        var errMessage = "This is not an NSFW Channel";
-        if (!message.channel.nsfw) {
-            message.react('💢');
-            return message.reply(errMessage)
-                .then(msg => {
-                    msg.delete({ timeout: 3000 })
-                })
+    usage: "nsfw <category>",
+    data:{
+      name: "nsfw",
+      description: "Show an nsfw",
+      options:[
+        {
+          name: "category",
+          description: "Category of NSFW",
+          type: "STRING",
+          required: true
         }
-
+      ]
+    },
+    async execute(interaction){
+        if (!interaction.channel.nsfw) {
+            let message = await interaction.reply({content: "This is not an NSFW Channel", ephemeral: true, fetchReply: true})
+            return message.react("💢")
+        }
+        const category = interaction.options.getString("category")
         const alphabet = "abcdefghijklmnopqrstuvwxyz1234567890"
-
-        if (!message.channel.nsfw) return message.reply('You must use this command in an nsfw lounge!')
-        if (!args[0]) return message.reply("You must enter the category")
-        for (let i = 0; i < args[0].length; i++) {
-            if (!alphabet.includes(args[0][i])) return message.reply(`Character '**${args[0][i]}**' is not allowed`)
-        }
         function getRndInteger(min, max) {
             return Math.floor(Math.random() * (max - min)) + min;
         }
 
-        const tempmsg = new Discord.MessageEmbed()
-            .setColor(config.colors.yes)
-            .setFooter(client.user.username, config.AVATARURL)
-            .setAuthor("Loading...", "https://cdn.discordapp.com/emojis/769935094285860894.gif")
+        for (let i = 0; i < category.length; i++) {
+            if (!alphabet.includes(category[i])) return interaction.reply({content: `Character '**${category[i]}**' is not allowed`, ephemeral: true})
+        }
 
-        message.channel.send(tempmsg).then(async m => {
-            links = []
-            const response = await fetch(`https://www.pornpics.com/${args[0]}`);
-            const body = await response.text();
-            array = body.split("\n")
-            for (let line in array) {
-                if (array[line].includes("https://cdni.pornpics.com")) {
-                    link = "https://cdni.pornpics.com" + array[line].split("https://cdni.pornpics.com")[1].split('"')[0]
-                    links.push(link)
-                }
+        links = []
+        const response = await fetch(`https://www.pornpics.com/${category}`);
+        const body = await response.text();
+        array = body.split("\n")
+        for(let line in array) {
+            if (array[line].includes("https://cdni.pornpics.com")) {
+                link = "https://cdni.pornpics.com" + array[line].split("https://cdni.pornpics.com")[1].split('"')[0]
+                links.push(link)
             }
+        }
 
-            do {
-                image = links[getRndInteger(0, links.length - 1)]
-            } while (image == "https://cdni.pornpics.com")
-
-            if (!image) {
-                const embed_nsfw = new Discord.MessageEmbed()
-                    .setDescription(args[0] + `\nNo results found for the category '**${args[0]}**'`)
-                return m.edit(embed_nsfw)
-            } else {
-                const embed_nsfw = new Discord.MessageEmbed()
-                    .setDescription(args[0])
-                    .setImage(image)
-                return m.edit(embed_nsfw)
-            }
-        })
+        do{
+            image = links[getRndInteger(0, links.length - 1)]
+        }while(image == "https://cdni.pornpics.com")
+        var embed_nsfw;
+        if(!image){
+            embed_nsfw = new Discord.MessageEmbed()
+                .setDescription(`No results found for the category '**${category}**'`)
+        }else{
+            embed_nsfw = new Discord.MessageEmbed()
+                .setDescription(category)
+                .setImage(image)
+        }
+        interaction.reply({embeds: [embed_nsfw]})
     }
 }

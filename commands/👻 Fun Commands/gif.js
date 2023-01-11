@@ -4,15 +4,16 @@ const rgif = require("discord-gifs");
 module.exports = {
   name: "gif",
   category: "👻 Fun Commands",
-  cooldown: 1,
-  usage: `gif [user]`,
+  usage: `gif`,
   description: "Random gif",
-  run: async (client, message, args) => {
-    return message.reply(
-      new MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setImage(rgif.randomgifs())
-    );
+  data:{
+    name: "gif",
+    description: "Random gif"
   },
-};
+  execute(interaction){
+    let embed = new MessageEmbed()
+      .setColor(config.colors.yes)
+      .setImage(rgif.randomgifs())
+    interaction.reply({embeds: [embed]})
+  }
+}

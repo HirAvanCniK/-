@@ -1,83 +1,137 @@
-const Discord = require("discord.js");
 const { version } = require("discord.js");
 const moment = require("moment");
+require("moment-duration-format");
 let os = require("os");
 let cpuStat = require("cpu-stat");
-const config = require("../../config.json");
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "botinfo",
   description: "Sends detailed info about the client",
   category: "🤖 Information Commands",
   usage: "botinfo",
-  run: async (client, message, args) => {
-    //command
-    let cpuLol;
+  data:{
+    name: "botinfo",
+    description: "Sends detailed info about the client"
+  },
+  execute(interaction){
     cpuStat.usagePercent(function (err, percent, seconds) {
       if (err) {
         return console.log(err);
       }
-      const duration = moment
-        .duration(client.uptime)
-        .format(" D [days], H [hrs], m [mins], s [secs]");
-      //
+      const duration = moment.duration(interaction.client.uptime).format("D [days], H [hrs], m [mins], s [secs]");
+
       let connectedchannelsamount = 0;
-      let guilds = client.guilds.cache.map((guild) => guild);
+      let guilds = interaction.client.guilds.cache.map((guild) => guild);
       for (let i = 0; i < guilds.length; i++) {
         if (guilds[i].me.voice.channel) connectedchannelsamount += 1;
       }
-
-      const botinfo = new Discord.MessageEmbed()
-        .setAuthor(client.user.username, config.AVATARURL)
-        .setTitle("__**Stats:**__")
-        .setColor(config.colors.yes)
-        .addField(
-          "⏳ Memory Usage",
-          `\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} / ${(
+  
+      let fields = [
+        {
+          name: "⏳ Memory Usage",
+          value: `\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} / ${(
             os.totalmem() /
             1024 /
             1024
           ).toFixed(2)} MB\``,
-          true
-        )
-        .addField("⌚️ Uptime ", `\`${duration}\``, true)
-        .addField("\u200b", `\u200b`, true)
-
-        .addField("📁 Users", `\`${client.users.cache.size}\``, true)
-        .addField("📁 Servers", `\`${client.guilds.cache.size}\``, true)
-        .addField("\u200b", `\u200b`, true)
-
-        .addField(
-          "📁 Voice-Channels",
-          `\`${
-            client.channels.cache.filter((ch) => ch.type === "voice").size
+          inline: true
+        },
+        {
+          name: "⌚️ Uptime ",
+          value: `\`${duration}\``,
+          inline: true
+        },
+        {
+          name: "\u200b",
+          value: `\u200b`,
+          inline: true
+        },
+        {
+          name: "📁 Users",
+          value: `\`${interaction.client.users.cache.size}\``,
+          inline: true
+        },
+        {
+          name: "📁 Servers",
+          value: `\`${interaction.client.guilds.cache.size}\``,
+          inline: true
+        },
+        {
+          name: "\u200b",
+          value: `\u200b`,
+          inline: true
+        },
+        {
+          name: "📁 Voice-Channels",
+          value: `\`${
+            interaction.client.channels.cache.filter((ch) => ch.type === "voice").size
           }\``,
-          true
-        )
-        .addField(
-          "📁 Connected Channels",
-          `\`${connectedchannelsamount}\``,
-          true
-        )
-        .addField("\u200b", `\u200b`, true)
+          inline: true
+        },
+        {
+          name: "📁 Connected Channels",
+          value: `\`${connectedchannelsamount}\``,
+          inline: true
+        },
+        {
+          name: "\u200b",
+          value: `\u200b`,
+          inline: true
+        },
+        {
+          name: "👾 Discord.js",
+          value: `\`v${version}\``,
+          inline: true
+        },
+        {
+          name: "🤖 Node",
+          value: `\`${process.version}\``,
+          inline: true
+        },
+        {
+          name: "\u200b",
+          value: `\u200b`,
+          inline: true
+        },
+        {
+          name: "🤖 CPU",
+          value: `\`\`\`md\n${os.cpus().map((i) => `${i.model}`)[0]}\`\`\``
+        },
+        {
+          name: "🤖 CPU usage",
+          value: `\`${percent.toFixed(2)}%\``,
+          inline: true
+        },
+        {
+          name: "🤖 Arch",
+          value: `\`${os.arch()}\``,
+          inline: true
+        },
+        {
+          name: "\u200b",
+          value: `\u200b`,
+          inline: true
+        },
+        {
+          name: "💻 Platform",
+          value: `\`\`${os.platform()}\`\``,
+          inline: true
+        },
+        {
+          name: "📡 API Latency",
+          value: `\`${interaction.client.ws.ping}ms\``,
+          inline: true
+        }
+      ]
 
-        .addField("👾 Discord.js", `\`v${version}\``, true)
-        .addField("🤖 Node", `\`${process.version}\``, true)
-        .addField("\u200b", `\u200b`, true)
-
-        .addField(
-          "🤖 CPU",
-          `\`\`\`md\n${os.cpus().map((i) => `${i.model}`)[0]}\`\`\``
-        )
-
-        .addField("🤖 CPU usage", `\`${percent.toFixed(2)}%\``, true)
-        .addField("🤖 Arch", `\`${os.arch()}\``, true)
-        .addField("\u200b", `\u200b`, true)
-
-        .addField("💻 Platform", `\`\`${os.platform()}\`\``, true)
-        .addField("API Latency", `\`${client.ws.ping}ms\``, true)
-
-        .setFooter("Coded by:    HirAvanCniK#1840", config.AVATARURL);
-      message.channel.send(botinfo);
-    });
-  },
-};
+      msg(
+        interaction,
+        "",
+        fields,
+        interaction.client.user.username,
+        "Stats"
+      )
+    })
+  }
+}

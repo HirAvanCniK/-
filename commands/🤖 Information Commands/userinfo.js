@@ -1,25 +1,33 @@
-const Discord = require("discord.js");
-const prefix = require("../../config.json");
+const { msg } = require("../../functions");
 
 module.exports = {
   name: "userinfo",
   description: "Information of a member",
   category: "🤖 Information Commands",
-  usage: "userinfo",
-  run: (client, message) => {
-    if (message.content == `${prefix}userinfo`) {
-      var utente = message.member;
-    } else {
-      var utente = message.mentions.members.first();
+  usage: "userinfo [user]",
+  data:{
+    name: "userinfo",
+    description: "Information of a member",
+    options:[
+      {
+        name: "user",
+        description: "The user to get information",
+        type: "USER",
+        required: false
+      }
+    ]
+  },
+  execute(interaction) {
+    const user = interaction.options.getUser("user") || "";
+    var utente;
+    if (user != ""){
+      utente = interaction.guild.members.cache.get(user.id)
     }
-
-    if (!utente) {
-      message.channel.send("Please enter the user");
-      return;
+    else{
+      utente = interaction.guild.members.cache.get(interaction.user.id)
     }
-
     var elencoPermessi = "";
-    if (utente.hasPermission("ADMINISTRATOR")) {
+    if (utente.permissions.has("ADMINISTRATOR")) {
       elencoPermessi = "👑 ADMINISTRATOR";
     } else {
       var permessi = [
@@ -54,43 +62,61 @@ module.exports = {
         "MANAGE_WEBHOOKS",
         "MANAGE_EMOJIS",
       ];
-
+  
       for (var i = 0; i < permessi.length; i++) {
-        if (utente.hasPermission(permessi[i])) {
-          elencoPermessi += "- " + permessi[i] + "\r";
-        }
+        try{
+          if (utente.permissions.has(permessi[i])) {
+            elencoPermessi += "- " + permessi[i] + "\r";
+          }
+        }catch{}
       }
     }
 
-    var embed3 = new Discord.MessageEmbed()
-      .setTitle(utente.user.tag)
-      .setDescription("All the information of this user")
-      .setThumbnail(utente.user.avatarURL())
-      .addField(":id:", "`" + utente.user.id + "`", true)
-      .addField(
-        ":video_game: Status ",
-        "`" + utente.user.presence.status + "`",
-        true
-      )
-      .addField(":robot: Is a bot?", utente.user.bot ? "`Yes`" : "`No`", true)
-      .addField(
-        ":birthday: Account created",
-        "`" + utente.user.createdAt.toDateString() + "`",
-        true
-      )
-      .addField(
-        ":house_with_garden: Joined in this server",
-        "`" + utente.joinedAt.toDateString() + "`",
-        true
-      )
-      .addField(":pencil: Permissions", "`" + elencoPermessi + "`", false)
-      .addField(
-        ":scroll: Roles",
-        "`" + utente.roles.cache.map((ruolo) => ruolo.name).join("\r- ") + "`",
-        false
-      )
-      .setColor(0x6200ff);
+    let flds = [{
+      name: ":id:",
+      value: "`" + utente.user.id + "`",
+      inline: true
+    },
+    {
+      name: ":hash: Discriminator",
+      value: "`" + utente.user.tag.split("#")[1] + "`",
+      inline: true
+    },
+    {
+      name: ":robot: Is a bot?",
+      value: utente.user.bot ? "`Yes`" : "`No`",
+      inline: false
+    },
+    {
+      name: ":birthday: Account created",
+      value: "`" + utente.user.createdAt.toDateString() + "`",
+      inline: true
+    },
+    {
+      name: ":house_with_garden: Joined in this server",
+      value: "`" + utente.joinedAt.toDateString() + "`",
+      inline: true
+    },
+    {
+      name: ":pencil: Permissions",
+      value: "`" + elencoPermessi + "`",
+      inline: false
+    },
+    {
+      name: ":scroll: Roles",
+      value: utente.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString()).join(", "),
+      inline: false
+    }]
 
-    message.channel.send(embed3);
-  },
-};
+    msg(
+      interaction,
+      null,
+      flds,
+      utente.user.username,
+      null,
+      null,
+      null,
+      utente.user.avatarURL()
+    )
+  }
+}

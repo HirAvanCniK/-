@@ -1,194 +1,365 @@
-///////////////MODULES///////////////
-/////////////////////////////////////
-//LOADING CONFIG FOR QUICK
 const config = require("./config.json");
-////////////
-const { Client, Collection } = require("discord.js");
-const Discord = require("discord.js");
+const { Client, Collection, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const fs = require("fs");
-const DisTube = require("distube");
-const Canvas = require("canvas");
-Canvas.registerFont("Genta.ttf", { family: "Genta" });
-//creating the client
+require("colors");
 const client = new Client({
-  messageCacheLifetime: 60,
-  fetchAllMembers: false,
-  intents: ["GUILDS", "GUILD_MESSAGES"],
-  messageCacheMaxSize: 10,
-  shards: "auto",
-  shardCount: 5,
-  disableEveryone: true,
+  intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_INTEGRATIONS", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"],
   partials: ["MESSAGE", "CHANNEL", "REACTION"],
 });
-const dbs = require("discord-buttons");
-dbs(client);
-const { MessageMenuOption, MessageMenu } = require("discord-buttons");
-client.commands = new Collection();
-client.queue = new Map();
-client.aliases = new Collection();
-const cooldowns = new Collection();
-//audiosetups
-client.distube = new DisTube(client, {
-  youtubeCookie: config.cookie,
-  searchSongs: true,
-  emitNewSongOnly: true,
-  highWaterMark: 1024 * 1024 * 64,
+
+const { DisTube } = require("distube")
+const { SpotifyPlugin } = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud");
+
+const distube = new DisTube(client, {
+  youtubeDL: false,
+  plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
   leaveOnEmpty: true,
-  leaveOnFinish: true,
   leaveOnStop: true,
-  searchSongs: false,
-  youtubeDL: true,
-  updateYouTubeDL: false,
-  customFilters: config.customs,
-});
-client.setMaxListeners(0);
-require("events").defaultMaxListeners = 0;
-//Externalfiles setups
-client.categories = fs.readdirSync("./commands/");
-["command"].forEach((handler) => {
-  require(`./handlers/${handler}`)(client);
-});
+  leaveOnFinish: true,
+  emitNewSongOnly: true,
+  nsfw: true
+})
 
-const setups = require("./handlers/setups");
-setups(client);
+let stateswitch = false;
 
-const counter = require("./modules/counter");
-counter(client);
-const jointocreate = require("./modules/jointocreate");
-jointocreate(client);
-const membercount = require("./modules/membercount");
-membercount(client);
-const reactionrole = require("./modules/reactionrole");
-reactionrole(client);
-const apply = require("./modules/apply");
-apply(client);
-const radiomodule = require("./modules/radiomodule");
-radiomodule(
-  client,
-  "738019408982573137",
-  "738019409527963682" /*, radiostation, volume*/
-);
-const logger = require("./modules/logger");
-logger.all(client);
+client.commands = new Collection()
 
-const functions = require("./functions");
-//databases setups
-const Enmap = require("enmap");
-client.settings = new Enmap({
-  name: "settings",
-  dataDir: "./databases/settings",
-});
-client.setups = new Enmap({ name: "setups", dataDir: "./databases/setups" });
-client.infos = new Enmap({ name: "infos", dataDir: "./databases/infos" });
-client.custom = new Enmap({ name: "custom", dataDir: "./databases/playlist" });
-client.custom2 = new Enmap({
-  name: "custom",
-  dataDir: "./databases/playlist2",
-});
-client.reactionrole = new Enmap({
-  name: "reactionrole",
-  dataDir: "./databases/reactionrole",
-});
-client.apply = new Enmap({ name: "apply", dataDir: "./databases/apply" });
+// Commands handler
+const commandsFolder = fs.readdirSync("./commands");
+for (const folder of commandsFolder) {
+    const commandsFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith(".js"));
+    for (const file of commandsFiles) {
+        const command = require(`./commands/${folder}/${file}`);
+        client.commands.set(command.name, command);
+    }
+}
 
-client.on("message", async (message) => {
-  if (message.author.bot) return;
-  if (!message.guild) return;
-  let prefix = client.settings.get(message.guild.id, `prefix`);
-  if (prefix === null) prefix = config.prefix;
-
-  if (
-    !message.content.startsWith(prefix) &&
-    message.content.includes(client.user.id)
-  )
-    message.reply(
-      new Discord.MessageEmbed()
-        .setColor(config.colors.yes)
-        .setAuthor(
-          `${message.author.username}, My prefix is ${prefix}, to get started; type ${prefix}help`,
-          message.author.displayAvatarURL({ dynamic: true }),
-          config.inviteUrl
-        )
-    );
-  if (!message.content.startsWith(prefix)) return;
-
-  if (client.settings.get(message.guild.id, `botchannel`).toString() !== "") {
-    if (
-      !client.settings
-        .get(message.guild.id, `botchannel`)
-        .includes(message.channel.id) &&
-      !message.member.hasPermission("ADMINISTRATOR")
-    ) {
-      let leftb = "";
-      for (
-        let i = 0;
-        i < client.settings.get(message.guild.id, `botchannel`).length;
-        i++
-      ) {
-        leftb +=
-          "<#" +
-          client.settings.get(message.guild.id, `botchannel`)[i] +
-          "> / ";
-      }
-      return functions.embedbuilder(
-        client,
-        5000,
-        message,
-        config.colors.no,
-        `Not in the Bot Chat!`,
-        `There is a Bot chat setup in this GUILD! try using the Bot Commands here: 
-              > ${leftb}`
+client.on("ready", () => {
+  setInterval(() => {
+    stateswitch = !stateswitch; //change state
+    if (stateswitch){
+      client.user.setActivity(
+        `${config.prefix}help | IRVANNI`,
+        {type: "COMPETING"}
       );
+    }
+    else{
+      client.user.setActivity(
+        `${client.guilds.cache.reduce((c, g) => c + g.memberCount, 0)} User | ${client.guilds.cache.size} Server`,
+        {type: "WATCHING"}
+      );
+    }
+  }, 5000); //5 second delay
+
+  client.guilds.cache.forEach(guild => {
+    client.commands.forEach(command => {
+        guild.commands.create(command.data)
+    })
+  })
+  console.log("╻–––––––––––––––––––––––––––╻–––––––––––––––––––––––––––╻––––––––––––––╻")
+  console.log("|         Category          |          Command          |     Load?    |")
+  console.log("|–––––––––––––––––––––––––––|–––––––––––––––––––––––––––|––––––––––––––|")
+  let cmd, spazioCat, spazioName, stringaCat, stringaName, load;
+  for (let command of client.commands){
+    stringaCat = "";
+    stringaName = "";
+    load = " E R R O R ❌ ".bold.red;
+    cmd = command[1]
+    spazioCat = 27 - cmd.category.length;
+    spazioName = 27 - cmd.name.length;
+    for(let i=0; i < spazioCat; i++){
+      stringaCat += " ";
+    }
+    for(let i=0; i < spazioName; i++){
+      stringaName += " ";
+    }
+    if(cmd.description && cmd.usage && cmd.data.name && cmd.data.description && cmd.execute){
+      load = " R E A D Y ✅ ".bold.green;
+    }
+    console.log("|" + cmd.category.cyan + stringaCat + "|" + cmd.name.blue + stringaName + "|" + load + "|")
+  }
+  console.log("╹–––––––––––––––––––––––––––╹–––––––––––––––––––––––––––╹––––––––––––––╹")
+  console.log(`${client.user.username} is Online 🟢`.bold.yellow)
+})
+
+// Execute command
+client.on("interactionCreate", interaction => {
+  if (!interaction.isCommand()) return
+  const command = client.commands.get(interaction.commandName)
+  if (!command) return
+  command.execute(interaction)
+})
+
+// Respond select help menu
+client.on('interactionCreate', interaction => {
+  if (!interaction.isSelectMenu()) return;
+  let commandsName = [];
+  let dir = interaction.values[0];
+  const commands = fs.readdirSync(`./commands/${dir}/`).filter((file) =>
+    file.endsWith(".js")
+  );
+  for (let file of commands) {
+    let pull = require(`./commands/${dir}/${file}`);
+    commandsName.push(pull.name)
+  }
+  var embed = new MessageEmbed()
+    .setTitle(dir)
+    .setDescription("➤ ***" + commandsName.join("***\n➤ ***") + "***")
+  interaction.reply({embeds: [embed], ephemeral: true})
+});
+
+// Music commands
+client.on("interactionCreate", interaction => {
+  if (!interaction.isCommand()) return 
+  var interactionEmbed = new MessageEmbed().setColor(config.colors.yes)
+  if (interaction.commandName == "play"){
+    const song = interaction.options.getString("song")
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
+    
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(interaction.client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+    
+    let queue = distube.getQueue(interaction)
+    if (queue) return interaction.reply({content: "Song already running", ephemeral: true})
+
+    distube.play(voiceChannelBot || voiceChannel, song, {
+        member: interaction.member,
+        textChannel: interaction.channel,
+        message: interaction.message
+    })
+
+    interactionEmbed.setTitle(`🎶 Searching... 🎶\n\`${song}\``)
+
+    interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+  }
+  if (interaction.commandName == "stop"){
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
+
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+
+    try{
+      distube.stop(interaction).then(() => {
+        interactionEmbed.setTitle("✅ Stop songs successfully")
+        return interaction.reply({embeds: [interactionEmbed]})
+      }).catch(() => {
+        interactionEmbed.setTitle("❌ No songs playing")
+        return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+      })
+    } catch {
+      interactionEmbed.setTitle("❌ No songs playing")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
     }
   }
+  if (interaction.commandName == "pause"){
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
 
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const cmd = args.shift().toLowerCase();
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
 
-  if (cmd.length === 0) return;
-  let command = client.commands.get(cmd);
-  if (!command) command = client.commands.get(client.aliases.get(cmd));
-  if (command) {
-    if (!cooldowns.has(command.name)) {
-      cooldowns.set(command.name, new Collection());
+    try{
+      distube.pause(interaction)
+      interactionEmbed.setTitle("✅ Song paused")
+      return interaction.reply({embeds: [interactionEmbed]})
+    } catch {
+      interactionEmbed.setTitle("❌ No song playing or song already paused")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+    }
+  }
+  if (interaction.commandName == "resume"){
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
+
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+
+    try{
+      distube.resume(interaction)
+      interactionEmbed.setTitle("✅ Song resumed")
+      return interaction.reply({embeds: [interactionEmbed]})
+    } catch {
+      interactionEmbed.setTitle("❌ No song playing or song already playing")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+    }
+  }
+  if (interaction.commandName == "skip"){
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
+
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+
+    try{
+      distube.skip(interaction).then(() => {
+        interactionEmbed.setTitle("✅ Song skipped")
+        return interaction.reply({embeds: [interactionEmbed]})
+      }).catch(() => {
+        interactionEmbed.setTitle("❌ No song playing or next song not present")
+        return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+      })
+    } catch {
+      interactionEmbed.setTitle("❌ No song playing or next song not present")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+    }
+  }
+  if (interaction.commandName == "previous"){
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
+
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+    try{
+      distube.previous(interaction).then(() => {
+        interactionEmbed.setTitle("✅ Previous song")
+        return interaction.reply({embeds: [interactionEmbed]})
+      }).catch(() => {
+        interactionEmbed.setTitle("❌ No song playing or previous song not present")
+        return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+      })
+    } catch {
+      interactionEmbed.setTitle("❌ No song playing or previous song not present")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+    }
+  }
+  if (interaction.commandName == "queue"){
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
+
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+
+    let queue = distube.getQueue(interaction)
+
+    if (!queue) return interaction.reply({content: "Empty queue", ephemeral: true})
+
+    var description = ""
+    var index = 0
+    for (let song in queue.songs){
+      index++
+      description += `**${index}.** ${queue.songs[song].name} ***${queue.songs[song].formattedDuration}***\n`
     }
 
-    const now = Date.now();
-    const timestamps = cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown || 2) * 1000;
+    let embed = new MessageEmbed()
+      .setTitle(":cyclone: Queue :cyclone:")
+      .setDescription(description)
+      .setColor(config.colors.yes)
 
-    if (timestamps.has(message.author.id)) {
-      const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+    interaction.reply({embeds: [embed], ephemeral: true})
+  }
+  if (interaction.commandName == "volume"){
+    const volume = interaction.options.getInteger("volume")
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
 
-      if (now < expirationTime) {
-        const timeLeft = (expirationTime - now) / 200;
-        return message.reply(
-          `Please wait ${timeLeft.toFixed(
-            1
-          )} more second(s) before reusing the \`${command.name}\` command.`
-        );
-      }
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+
+    if (volume < 0){
+      interactionEmbed.setTitle("❌ The minimum value of the volume is 0")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
     }
-
-    timestamps.set(message.author.id, now);
-    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
-    client.infos.set(
-      "global",
-      Number(client.infos.get("global", "cmds")) + 1,
-      "cmds"
-    );
-    try {
-      command.run(client, message, args, prefix);
-    } catch (error) {
-      var data = new Date();
-      console.log(
-        `Errore avvenuto alle ${data.getHours()}:${data.getMinutes()} ${data.getDate()}/${
-          data.getMonth() + 1
-        }/${data.getFullYear()} dal comando '${message.content}'\n${error.message}`
-      );
+    if (volume > 100){
+      interactionEmbed.setTitle("❌ The maximum value of the volume is 100")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
     }
-  } else return message.reply(`Unkown command, try: ${prefix}help`);
-});
+  
+    try{
+      distube.setVolume(interaction, volume)
+      interactionEmbed.setTitle(`✅ Volume set at \`${volume}%\``)
+      return interaction.reply({embeds: [interactionEmbed]})
+    } catch {
+      interactionEmbed.setTitle("❌ No song playing")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+    }
+  }
+  if (interaction.commandName == "loop"){
+    const what = interaction.options.getInteger("loop")
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
 
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+
+    if (what != 0 && what != 1 && what != 2) return interaction.reply({content: `The argument '**${what}**' does not exist\n(0) Remove loop\n(1) Loop at song\n(2) Loop at queue`, ephemeral: true})
+
+    try{
+      distube.setRepeatMode(interaction, what)
+      if (what == 0) interactionEmbed.setTitle(`✅ Loop removed`)
+      else if (what == 1) interactionEmbed.setTitle(`✅ Loop set at song`)
+      else interactionEmbed.setTitle(`✅ Loop set at queue`)
+      return interaction.reply({embeds: [interactionEmbed]})
+    } catch {
+      interactionEmbed.setTitle("❌ No song playing")
+      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
+    }
+  }
+  if (interaction.commandName == "status"){
+    const voiceChannel = interaction.member.voice.channel
+    if (!voiceChannel) return interaction.reply({content: "You must be in a voice channel", ephemeral: true})
+
+    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
+    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) return interaction.reply({content: "Someone else is already listening to music", ephemeral: true})
+
+    let queue = distube.getQueue(interaction)
+    console.log(queue.formattedCurrentTime)
+  }
+})
+
+// distube.on("addSong", (queue, song) => {
+//   let embed = new MessageEmbed()
+//       .setTitle("Song added")
+//       .addField("Song", song.name)
+
+//   queue.textChannel.send({ embeds: [embed] })
+// })
+
+distube.on("playSong", (queue, song) => {
+  let volume = "";
+  if (queue.volume == 0) volume = ":mute:"
+  else if (queue.volume < 20) volume = ":speaker:"
+  else if (queue.volume <= 50) volume = ":sound:"
+  else volume = ":loud_sound:"
+  let embed = new MessageEmbed()
+      .setTitle("🎧 Playing song 🎧")
+      .setThumbnail(song.thumbnail)
+      .addFields(
+          {
+              name: ":bulb: Requested by",
+              value: song.user.toString(),
+              inline: true
+          },
+          {
+              name: ":mirror_ball: Song",
+              value: `> [\`${song.name}\`](${song.url})`,
+              inline: true
+          },
+          {
+              name: ":stopwatch: Duration",
+              value: "> `" + song.formattedDuration + "`",
+              inline: true
+          },
+          {
+              name: `${volume} Volume`,
+              value: "> `" + queue.volume + "%`",
+              inline: true
+          },
+          {
+              name: ":cyclone: Queue",
+              value: "> `" + queue.songs.length + " songs left - " + queue.formattedDuration + "`",
+              inline: true
+          }
+      )
+      .setColor(config.colors.yes)
+  queue.textChannel.send({ embeds: [embed], ephemeral: true})
+})
+
+distube.on("searchNoResult", (message, query) => {
+  message.channel.send("Canzone non trovata")
+})
+
+// Login
 client.login(config.token);

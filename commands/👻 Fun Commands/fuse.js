@@ -8,30 +8,39 @@ module.exports = {
   category: "👻 Fun Commands",
   usage: `fuse [user]`,
   description: "Image cmd in the style fuse",
-  run: async (client, message, args) => {
-    let tempmsg = await message.channel.send(
-      new MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setAuthor(
-          "Loading...",
-          "https://cdn.discordapp.com/emojis/769935094285860894.gif"
-        )
-    );
-    let user = message.mentions.users.first() || message.author;
-    let user2 = message.mentions.users.last() || message.author;
-    if (user === user2) user2 = message.author;
+  data:{
+    name: "fuse",
+    description: "Image cmd in the style fuse",
+    options:[
+      {
+        name: "user_1",
+        description: "The first user to fuse",
+        type: "USER",
+        required: true
+      },
+      {
+        name: "user_2",
+        description: "The second user to fuse",
+        type: "USER",
+        required: true
+      }
+    ]
+  },
+  async execute(interaction){
+    const utente_1 = interaction.options.getUser("user_1");
+    const utente_2 = interaction.options.getUser("user_2");
+    var user = interaction.guild.members.cache.get(utente_1.id)
+    var user2 = interaction.guild.members.cache.get(utente_2.id)
+    if (user === user2) user2 = interaction.user;
     let avatar = user.displayAvatarURL({ dynamic: false, format: "png" });
     let avatar2 = user2.displayAvatarURL({ dynamic: false, format: "png" });
     let image = await canvacord.Canvas.fuse(avatar, avatar2);
     let attachment = await new Discord.MessageAttachment(image, "fuse.png");
-    let fastembed2 = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(config.colors.yes)
-      .setFooter(client.user.username, config.AVATARURL)
       .setImage("attachment://fuse.png")
-      .attachFiles(attachment)
-      .setFooter(client.user.username, config.AVATARURL);
-    await message.channel.send(fastembed2);
-    await tempmsg.delete();
-  },
-};
+
+    interaction.reply({embeds: [embed], files: [attachment]})
+
+  }
+}

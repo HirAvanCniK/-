@@ -1,21 +1,23 @@
-const Discord = require("discord.js");
-const functions = require("../../functions");
 const config = require("../../config.json");
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "support",
   category: "🤖 Information Commands",
   description: "Shows you the Support Server",
   usage: "support",
-  run: async (client, message, args) => {
-    message.reply(
-      new Discord.MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setAuthor(
-          "" + client.user.username + " | Support",
-          client.user.displayAvatarURL()
-        )
-        .setDescription("[`Server`](https://discord.gg/dPywf29rUq)")
-    );
+  data:{
+    name: "support",
+    description: "Shows you the Support Server"
   },
-};
+  execute(interaction){
+    msg(
+      interaction,
+      null,
+      null,
+      null,
+      "Support",
+      `[\`Server\`](${config.serverInviteURL})`
+    )
+  }
+}

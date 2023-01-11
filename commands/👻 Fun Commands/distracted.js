@@ -8,25 +8,36 @@ module.exports = {
   category: "👻 Fun Commands",
   usage: `distracted [user]`,
   description: "Image cmd in the style distracted",
-  run: async (client, message, args) => {
-    let tempmsg = await message.channel.send(
-      new MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setAuthor(
-          "Loading...",
-          "https://cdn.discordapp.com/emojis/769935094285860894.gif"
-        )
-    );
-    let user = message.mentions.users.first() || message.author;
-    let user2 = message.mentions.users.last() || message.author;
-    let avatar3 = message.guild.iconURL({ dynamic: false, format: "png" });
-    if (user !== message.author && user2 !== message.author)
-      avatar3 = message.author.displayAvatarURL({
+  data:{
+    name: "distracted",
+    description: "Image cmd in the style distracted",
+    options:[
+      {
+        name: "user_1",
+        description: "The first user to distracted",
+        type: "USER",
+        required: true
+      },
+      {
+        name: "user_2",
+        description: "The second user to distracted",
+        type: "USER",
+        required: true
+      }
+    ]
+  },
+  async execute(interaction){
+    const utente_1 = interaction.options.getUser("user_1");
+    const utente_2 = interaction.options.getUser("user_2");
+    var user = interaction.guild.members.cache.get(utente_1.id)
+    var user2 = interaction.guild.members.cache.get(utente_2.id)
+    let avatar3 = interaction.guild.iconURL({ dynamic: false, format: "png" });
+    if (user !== interaction.user && user2 !== interaction.user)
+      avatar3 = interaction.user.displayAvatarURL({
         dynamic: false,
         format: "png",
       });
-    if (user === user2) user2 = message.author;
+    if (user === user2) user2 = interaction.user;
     let avatar = user.displayAvatarURL({ dynamic: false, format: "png" });
     let avatar2 = user2.displayAvatarURL({ dynamic: false, format: "png" });
     let image = await canvacord.Canvas.distracted(avatar, avatar2, avatar3);
@@ -34,13 +45,10 @@ module.exports = {
       image,
       "distracted.png"
     );
-    let fastembed2 = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(config.colors.yes)
-      .setFooter(client.user.username, config.AVATARURL)
       .setImage("attachment://distracted.png")
-      .attachFiles(attachment)
-      .setFooter(client.user.username, config.AVATARURL);
-    await message.channel.send(fastembed2);
-    await tempmsg.delete();
-  },
-};
+
+    interaction.reply({embeds: [embed], files: [attachment]})
+  }
+}

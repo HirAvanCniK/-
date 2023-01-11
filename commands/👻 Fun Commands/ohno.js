@@ -6,29 +6,29 @@ const canvacord = require("canvacord");
 module.exports = {
   name: "ohno",
   category: "👻 Fun Commands",
-  usage: `ohno [user]`,
+  usage: `ohno [text]`,
   description: "Image cmd in the style ohno",
-  run: async (client, message, args) => {
-    let tempmsg = await message.channel.send(
-      new MessageEmbed()
-        .setColor(config.colors.yes)
-        .setFooter(client.user.username, config.AVATARURL)
-        .setAuthor(
-          "Loading...",
-          "https://cdn.discordapp.com/emojis/769935094285860894.gif"
-        )
-    );
-    let msg = args.join(" ");
+  data:{
+    name: "ohno",
+    description: "Image cmd in the style ohno",
+    options:[
+      {
+        name: "text",
+        description: "The text to ohno",
+        type: "STRING",
+        required: false
+      }
+    ]
+  },
+  async execute(interaction){
+    const msg = interaction.options.getString("text");
     if (!msg) msg = "Please provide text!";
     let image = await canvacord.Canvas.ohno(msg);
     let attachment = await new Discord.MessageAttachment(image, "ohno.png");
-    let fastembed2 = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(config.colors.yes)
-      .setFooter(client.user.username, config.AVATARURL)
       .setImage("attachment://ohno.png")
-      .attachFiles(attachment)
-      .setFooter(client.user.username, config.AVATARURL);
-    await message.channel.send(fastembed2);
-    await tempmsg.delete(); //ohno
-  },
-};
+
+    interaction.reply({embeds: [embed], files: [attachment]})
+  }
+}
