@@ -1,3 +1,5 @@
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "random",
   category: "📋 School Commands",
@@ -27,6 +29,9 @@ module.exports = {
     function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
-    interaction.reply(`\`${getRandomInt(nMin, nMax)}\``)
+    return msg({
+      interaction,
+      title: `\`${getRandomInt(nMin, nMax)}\``
+    })
   }
 }

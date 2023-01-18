@@ -1,3 +1,5 @@
+const { msg } = require("../../functions");
+
 const answers = [
   "Maybe.",
   "Certainly Not.",
@@ -48,6 +50,9 @@ module.exports = {
   },
   execute(interaction){
     const question = interaction.options.getString("question")
-    return interaction.reply(question.endsWith("?")? `🎱 ${answers[Math.floor(Math.random() * answers.length)]}`: "🎱 ***That doesn't seems to be a Question! Please try again!***");
+    msg({
+      interaction,
+      title: question.endsWith("?")? `🎱 ${answers[Math.floor(Math.random() * answers.length)]}`: "🎱 ***That doesn't seems to be a Question! Please try again!***"
+    })
   }
 }

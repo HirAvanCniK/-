@@ -1,6 +1,5 @@
 const math = require("math-expression-evaluator");
-const Discord = require("discord.js");
-const config = require("../../config.json")
+const { msg } = require("../../functions");
 
 module.exports = {
   name: "calc",
@@ -24,19 +23,24 @@ module.exports = {
     let answer;
     try{
       answer = math.eval(question);
-    }catch{return interaction.reply({content: "Invalid mathematical equation", ephemeral: true})}
-    let embed = new Discord.MessageEmbed()
-      .setColor(config.colors.yes)
-      .addFields(
-        {
-          name: "Equation",
-          value: `\`\`\`${question} \`\`\``
-        },
-        {
-          name: "Answer",
-          value: `\`\`\`${answer} \`\`\``
-        }
-      )
-    interaction.reply({embeds: [embed]})
+    }catch{
+      return msg({
+        interaction,
+        color: "RED",
+        title: "Invalid mathematical equation",
+        ephemeral: true
+      })
+    }
+    return msg({
+      interaction,
+      fields: [{
+        name: "Equation",
+        value: `\`\`\`${question} \`\`\``
+      },
+      {
+        name: "Answer",
+        value: `\`\`\`${answer} \`\`\``
+      }]
+    })
   }
 }

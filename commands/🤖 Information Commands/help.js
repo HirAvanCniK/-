@@ -1,15 +1,17 @@
 const fs = require("fs");
 const Discord = require("discord.js");
 const config = require("../../config.json");
+const { msg } = require("../../functions");
+const { title } = require("process");
 
 module.exports = {
   name: "help",
   category: "🤖 Information Commands",
-  description: "list of all commands",
+  description: "List of all commands",
   usage: "help [command_name]",
   data:{
     name: "help",
-    description: "Shows Information about the Developer",
+    description: "List of all commands",
     options:[
       {
         name: "command",
@@ -25,8 +27,9 @@ module.exports = {
       function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
-      let embed = new Discord.MessageEmbed().setFooter(`Created by ${interaction.client.application.owner.tag}`, interaction.client.user.avatarURL())
       let notFind = true;
+      let title
+      let desc
       fs.readdirSync("./commands/").forEach((dir) => {
         const commands = fs.readdirSync(`./commands/${dir}/`).filter((file) =>
           file.endsWith(".js")
@@ -34,17 +37,22 @@ module.exports = {
         for (let file of commands) {
           let pull = require(`../${dir}/${file}`);
           if (pull.name == command.toLowerCase()) {
-            embed.setTitle(`${capitalizeFirstLetter(pull.name)} command`)
-            embed.setDescription(`***Category***: ${pull.category}\n***Description***: ${pull.description}\n***Usage***: ${config.prefix}${pull.usage}`);
+            title = `${capitalizeFirstLetter(pull.name)} command`
+            desc = `***Category***: ${pull.category}\n***Description***: ${pull.description}\n***Usage***: ${config.prefix}${pull.usage}`
             notFind = false;
             break
           }
         }
       })
       if(notFind){
-        embed.setTitle(`Unknown command '${command}'`);
+        title = `Unknown command '${command}'`
       }
-      return interaction.reply({embeds: [embed], ephemeral: true, fetchReply: true})
+      return msg({
+        interaction,
+        title: title,
+        description: desc,
+        ephemeral: true
+      })
     } else {
       let commandsName = {};
       var row = new Discord.MessageActionRow()

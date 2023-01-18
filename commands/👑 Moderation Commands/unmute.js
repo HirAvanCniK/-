@@ -1,3 +1,5 @@
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "unmute",
   description: "Toggle mute of a member",
@@ -18,10 +20,27 @@ module.exports = {
   async execute(interaction){
     const user = interaction.options.getUser("user")
     const Member = interaction.guild.members.cache.get(user.id)
-    if (!interaction.member.permissions.has("MANAGE_MESSAGES", "ADMINISTRATOR")) return interaction.reply({content: "You don't have permission", ephemeral: true})
+    if (!interaction.member.permissions.has("MANAGE_MESSAGES", "ADMINISTRATOR")){
+      return msg({
+        interaction,
+        color: "RED",
+        title: "You don't have permission",
+        ephemeral: true
+      })
+    }
     const role = interaction.guild.roles.cache.find((r) => r.name.toLowerCase() === "muted")
-    if (!Member.roles.cache.has(`${role.id}`)) return interaction.reply({content: `${Member} has not mutated`, ephemeral: true})
+    if (!Member.roles.cache.has(`${role.id}`)){
+      return msg({
+        interaction,
+        color: "RED",
+        title: `${Member} has not mutated`,
+        ephemeral: true
+      })
+    }
     await Member.roles.remove(role)
-    interaction.reply(`${Member} is now unmutated`)
+    return msg({
+      interaction,
+      title: `${Member} is now unmutated`
+    })
   }
-};
+}

@@ -1,3 +1,5 @@
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "removerole",
   description: "Remove role of a member",
@@ -25,11 +27,35 @@ module.exports = {
     const user = interaction.options.getUser("user")
     const role = interaction.options.getRole("role")
     var target = interaction.guild.members.cache.get(user.id)
-    if (!interaction.member.permissions.has("MANAGE_ROLES")) return interaction.reply({content: "You don't have permission", ephemeral: true})
-    if (!target.roles.cache.has(role.id)) return interaction.reply({content: `${target} doesn't have the role ${role}`, ephemeral: true})
+    if (!interaction.member.permissions.has("MANAGE_ROLES")){
+      return msg({
+        interaction,
+        color: "RED",
+        title: "You don't have permission",
+        ephemeral: true
+      })
+    }
+    if (!target.roles.cache.has(role.id)){
+      return msg({
+        interaction,
+        color: "RED",
+        title: `${target} doesn't have the role ${role}`,
+        ephemeral: true
+      })
+    }
     try{
       await target.roles.remove(role);
-    }catch{return interaction.reply({content: "I don't have permission", ephemeral: true})}
-    interaction.reply(`${target} lost the role ${role}`)
+    }catch{
+      return msg({
+        interaction,
+        color: "RED",
+        title: "I don't have permission",
+        ephemeral: true
+      })
+    }
+    return msg({
+      interaction,
+      title: `${target} lost the role ${role}`
+    })
   }
-};
+}

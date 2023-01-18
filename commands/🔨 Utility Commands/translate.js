@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
 const translate = require("translatte");
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "translate",
   category: "🔨 Utility Commands",
@@ -36,31 +38,31 @@ module.exports = {
     const text = interaction.options.getString("text")
     translate(text, {from: from, to: to})
       .then((res) => {
-        let embed = new Discord.MessageEmbed()
-          .setColor(config.colors.yes)
-          .setThumbnail("https://imgur.com/0DQuCgg.png")
-          .addFields(
-            {
-              name: `From: \`${from}\``.substr(0, 256),
-              value: text
-            },
-            {
-              name: "\u200B",
-              value: "\u200B"
-            },
-            {
-              name: `To: \`${to}\``.substr(0, 256),
-              value: res.text.substr(0, 1024)
-            }
-          )
-          interaction.reply({embeds: [embed]});
+        return msg({
+          interaction,
+          thumbnail: "https://imgur.com/0DQuCgg.png",
+          fields: [{
+            name: `From: \`${from}\``.substr(0, 256),
+            value: text
+          },
+          {
+            name: "\u200B",
+            value: "\u200B"
+          },
+          {
+            name: `To: \`${to}\``.substr(0, 256),
+            value: res.text.substr(0, 1024)
+          }],
+        })
       })
       .catch((err) => {
-        let embed = new Discord.MessageEmbed()
-          .setColor(config.colors.yes)
-          .setTitle(":x: Error | Something went wrong")
-          .setDescription(String("```" + err.stack + "```").substr(0, 2000));
-        interaction.reply({embeds: [embed]});
+        return msg({
+          interaction,
+          color: "RED",
+          title: ":x: Error | Something went wrong",
+          description: String("```" + err.stack + "```").substr(0, 2000),
+          ephemeral: true
+        })
         console.log(err);
       });
   }

@@ -11,13 +11,10 @@ module.exports = {
     description: "Shows you the Support Server"
   },
   execute(interaction){
-    msg(
+    return msg({
       interaction,
-      null,
-      null,
-      null,
-      "Support",
-      `[\`Server\`](${config.serverInviteURL})`
-    )
+      title: "Support",
+      description: `[\`Server\`](${config.serverInviteURL})`
+    })
   }
 }

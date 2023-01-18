@@ -11,13 +11,10 @@ module.exports = {
   },
   async execute(interaction){
     await interaction.client.application.fetch()
-    msg(
+    return msg({
       interaction,
-      "",
-      [],
-      interaction.client.application.owner.tag,
-      "",
-      `
+      author: interaction.client.application.owner.tag,
+      description: `
       > Hello I am **IRVANNI** <@536798044939878403>
       
       > I am a developer of websites, applications, bots and more [SEE IT](https://irvanni.ga/)
@@ -25,7 +22,7 @@ module.exports = {
       > I hope you like my stuff :v: :heart:
       
       `,
-      interaction.client.application.owner.avatarURL()
-    )
+      thumbnail: interaction.client.application.owner.avatarURL()
+    })
   }
 };

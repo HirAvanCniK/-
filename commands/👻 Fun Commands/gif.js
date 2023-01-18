@@ -1,6 +1,8 @@
 const { MessageEmbed } = require("discord.js");
 const config = require("../../config.json");
 const rgif = require("discord-gifs");
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "gif",
   category: "👻 Fun Commands",
@@ -11,9 +13,9 @@ module.exports = {
     description: "Random gif"
   },
   execute(interaction){
-    let embed = new MessageEmbed()
-      .setColor(config.colors.yes)
-      .setImage(rgif.randomgifs())
-    interaction.reply({embeds: [embed]})
+    msg({
+      interaction,
+      image: rgif.randomgifs()
+    })
   }
 }

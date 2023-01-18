@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
-const config = require("../../config.json");
 const fetch = require('node-fetch');
+const { msg } = require('../../functions');
+const config = require("../../config.json");
 
 module.exports = {
     name: "nsfw",
@@ -21,8 +22,12 @@ module.exports = {
     },
     async execute(interaction){
         if (!interaction.channel.nsfw) {
-            let message = await interaction.reply({content: "This is not an NSFW Channel", ephemeral: true, fetchReply: true})
-            return message.react("💢")
+            return msg({
+                interaction,
+                color: "RED",
+                title: "This is not an NSFW Channel",
+                ephemeral: true
+            })
         }
         const category = interaction.options.getString("category")
         const alphabet = "abcdefghijklmnopqrstuvwxyz1234567890"
@@ -31,7 +36,14 @@ module.exports = {
         }
 
         for (let i = 0; i < category.length; i++) {
-            if (!alphabet.includes(category[i])) return interaction.reply({content: `Character '**${category[i]}**' is not allowed`, ephemeral: true})
+            if (!alphabet.includes(category[i])){
+                return msg({
+                    interaction,
+                    color: "RED",
+                    title: `Character '**${category[i]}**' is not allowed`,
+                    ephemeral: true
+                })
+            }
         }
 
         links = []
@@ -50,10 +62,10 @@ module.exports = {
         }while(image == "https://cdni.pornpics.com")
         var embed_nsfw;
         if(!image){
-            embed_nsfw = new Discord.MessageEmbed()
+            embed_nsfw = new Discord.MessageEmbed().setColor(config.colors.yes).setFooter(`Created by ${interaction.client.application.owner.tag}`, interaction.client.user.avatarURL())
                 .setDescription(`No results found for the category '**${category}**'`)
         }else{
-            embed_nsfw = new Discord.MessageEmbed()
+            embed_nsfw = new Discord.MessageEmbed().setColor(config.colors.yes).setFooter(`Created by ${interaction.client.application.owner.tag}`, interaction.client.user.avatarURL())
                 .setDescription(category)
                 .setImage(image)
         }

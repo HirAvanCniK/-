@@ -108,15 +108,11 @@ module.exports = {
       inline: false
     }]
 
-    msg(
+    return msg({
       interaction,
-      null,
-      flds,
-      utente.user.username,
-      null,
-      null,
-      null,
-      utente.user.avatarURL()
-    )
+      fields: flds,
+      author: utente.user.username,
+      thumbnail: utente.user.avatarURL()
+    })
   }
 }

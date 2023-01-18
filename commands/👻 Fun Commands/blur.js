@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const Discord = require(`discord.js`);
 const config = require("../../config.json");
 const canvacord = require("canvacord");
+
 module.exports = {
   name: "blur",
   category: "👻 Fun Commands",

@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { msg } = require("../../functions");
 
 module.exports = {
   name: `clear`,
@@ -19,17 +20,44 @@ module.exports = {
   },
   execute(interaction){
     const deleteAmount = interaction.options.getInteger("messages")
-    if (!interaction.member.permissions.has("MANAGE_MESSAGES")) return interaction.reply({content: "You don't have permission", ephemeral: true})
-    if (deleteAmount >= 100) return interaction.reply({content: "The MAX messages to delete is 99", ephemeral: true})
-    if (deleteAmount < 1) return interaction.reply({content: "The MIN messages to delete is 1", ephemeral: true})
+    if (!interaction.member.permissions.has("MANAGE_MESSAGES")){
+      return msg({
+        interaction,
+        color: "RED",
+        title: "You don't have permission",
+        ephemeral: true
+      })
+    }
+    if (deleteAmount >= 100){
+      return msg({
+        interaction,
+        color: "RED",
+        title: "The MAX messages to delete is 99",
+        ephemeral: true
+      })
+    }
+    if (deleteAmount < 1){
+      return msg({
+        interaction,
+        color: "RED",
+        title: "The MIN messages to delete is 1",
+        ephemeral: true
+      })
+    }
     try {
       interaction.channel.bulkDelete(deleteAmount + 1, true)
-    }catch{return interaction.reply({content: "I don't have permission", ephemeral: true})}
-    var embed = new Discord.MessageEmbed()
-      .setTitle(`Has eliminated ***${deleteAmount}*** messages.`)
-      .setAuthor(interaction.user.username)
-      .setColor(0x6200ff)
-      .setTimestamp();
-    interaction.reply({embeds: [embed]})
+    }catch{
+      return msg({
+        interaction,
+        color: "RED",
+        title: "I don't have permission",
+        ephemeral: true
+      })
+    }
+    return msg({
+      interaction,
+      title: `Has eliminated ***${deleteAmount}*** messages.`,
+      author: interaction.user.username
+    })
   }
 }

@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
-const fetch = require("node-fetch")
+const fetch = require("node-fetch");
+const { msg } = require("../../functions");
 
 module.exports = {
   name: "embed",
@@ -51,33 +52,35 @@ module.exports = {
         description: "The image of embed",
         type: "STRING",
         required: false
+      },
+      {
+        name: "url",
+        description: "The url of embed",
+        type: "STRING",
+        required: false
       }
     ]
   },
   async execute(interaction){
-    const author = interaction.options.getString("author") || "Author";
-    const title = interaction.options.getString("title") || "Title";
-    const description = interaction.options.getString("description") || "Description";
-    const color = interaction.options.getString("color") || "RANDOM";
-    const footer = interaction.options.getString("footer") || "Footer";
-    const thumbnail = interaction.options.getString("thumbnail") || "";
-    const image = interaction.options.getString("image") || "";
+    const author = interaction.options.getString("author") || undefined;
+    const title = interaction.options.getString("title") || undefined;
+    const description = interaction.options.getString("description") || undefined;
+    const color = interaction.options.getString("color") || undefined;
+    const footer = interaction.options.getString("footer") || undefined;
+    const thumbnail = interaction.options.getString("thumbnail") || undefined;
+    const image = interaction.options.getString("image") || undefined;
+    const url = interaction.options.getString("url") || undefined;
     
-    const embed = new Discord.MessageEmbed()
-    try{ embed.setAuthor(author) } catch { }
-    try{ embed.setTitle(title) } catch { }
-    try{ embed.setDescription(description) } catch { }
-    try{ embed.setFooter(footer) } catch { }
-    try{ embed.setColor(color) } catch { }
-    try {
-      response = await fetch(thumbnail).then(res => res.json())
-      embed.setThumbnail(thumbnail)
-    } catch {}
-    try {
-      response = await fetch(image).then(res => res.json())
-      embed.setThumbnail(image)
-    } catch {}
-
-    interaction.reply({embeds: [embed]})
+    return msg({
+      interaction,
+      author: author,
+      title: title,
+      description: description,
+      color: color,
+      footer: footer,
+      thumbnail: thumbnail,
+      image: image,
+      url: url
+    })
   }
 };

@@ -1,3 +1,5 @@
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "say",
   category: "👻 Fun Commands",
@@ -16,7 +18,10 @@ module.exports = {
     ]
   },
   execute(interaction){
-    const msg = interaction.options.getString("text");
-    interaction.reply(msg)
+    const txt = interaction.options.getString("text");
+    msg({
+      interaction,
+      description: txt
+    })
   }
 }

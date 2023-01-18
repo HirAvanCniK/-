@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
 const fetch = require("node-fetch");
+const { msg } = require("../../functions");
+const { getResponseHeaders } = require("distube");
 
 module.exports = {
   name: "wikipedia",
@@ -27,29 +29,39 @@ module.exports = {
       response = await fetch(url).then(res => res.json())
     }
     catch (e) {
-      return message.reply('An Error Occured, Try Again').then((msg) => { msg.delete({ timeout: 10000 }) });
+      return msg({
+        interaction,
+        color: "RED",
+        title: 'An Error Occured, Try Again',
+        ephemeral: true
+      })
     }
     try {
         if (response.type === 'disambiguation') { // If Their Are Many Results With Same Searched Topic
-          const embed = new Discord.MessageEmbed()
-            .setColor(config.colors.yes)
-            .setTitle(response.title) // Title Of Topic
-            .setURL(response.content_urls.desktop.page) // URL Of Searched Topic
-            .setDescription([`${response.extract} Links For Topic You Searched [Link](${response.content_urls.desktop.page}).`])
-          interaction.reply({embeds: [embed]})
+          return msg({
+            interaction,
+            title: response.title,
+            url: response.content_urls.desktop.page,
+            description: [`${response.extract} Links For Topic You Searched [Link](${response.content_urls.desktop.page}).`]
+          })
         }
         else {
-          const embed = new Discord.MessageEmbed()
-          try { embed.setColor(config.colors.yes) } catch { }
-          try { embed.setTitle(response.title) } catch { } // Title Of Topic
-          try { embed.setURL(response.content_urls.desktop.page) } catch { } // URL Of Searched Topic
-          try { embed.setThumbnail(response.thumbnail.source) } catch { }
-          try { embed.setDescription(response.extract) } catch { }
-          interaction.reply({embeds: [embed]})
+          return msg({
+            interaction,
+            title: response.title,
+            url: response.content_urls.desktop.page,
+            thumbnail: response.thumbnail.source,
+            description: response.extract
+          })
         }
       }
       catch (e) {
-        return interaction.reply('Provide A Valid Query To Search')
+        return msg({
+          interaction,
+          color: "RED",
+          title: 'Provide A Valid Query To Search',
+          ephemeral: true
+        })
       }
   }
 };

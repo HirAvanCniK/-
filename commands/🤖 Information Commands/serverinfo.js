@@ -73,15 +73,11 @@ module.exports = {
       value: roles.join(', ')
     }]
 
-    msg(
+    return msg({
       interaction,
-      null,
-      flds,
-      null,
-      server.name,
-      null,
-      null,
-      server.iconURL()
-    )
+      fields: flds,
+      title: server.name,
+      thumbnail: server.iconURL()
+    })
   }
 }

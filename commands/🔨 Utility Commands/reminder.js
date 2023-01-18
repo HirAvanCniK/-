@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
-const fs = require("fs");
+const sqlite3 = require('sqlite3');
+const { msg } = require("../../functions");
 
 module.exports = {
     name: "reminder",
@@ -18,65 +18,115 @@ module.exports = {
                 required: false
             },
             {
-                name: "thing",
-                description: "The thing to be added/removed",
+                name: "object",
+                description: "The object to be added/removed",
                 type: "STRING",
                 required: false
             }
         ]
     },
     execute(interaction){
-        const istruction = interaction.options.getString("istruction") || "";
-        const thing = interaction.options.getString("thing") || "";
-        if(istruction == "" && thing == ""){
-            const preview = JSON.parse(fs.readFileSync("./databases/reminder.json", "utf8"));
-            if (!preview[interaction.user.id]) {
-                preview[interaction.user.id] = [];
-                fs.writeFileSync("./databases/reminder.json", JSON.stringify(preview));
-                return interaction.reply("Database created successfully!")
-            } else {
-                const data = JSON.parse(fs.readFileSync("./databases/reminder.json", "utf8"));
-                var fields = "";
-                for (let i in data[interaction.user.id]) {
-                    fields += `***${parseInt(i) + 1}***. ${data[interaction.user.id][i.toString()]}\n`;
+        const istruction = interaction.options.getString("istruction") || undefined;
+        const thing = interaction.options.getString("object") || undefined;
+        let db = new sqlite3.Database('./databases/database.db', sqlite3.OPEN_READWRITE);
+        if(istruction==undefined && thing==undefined){
+            let desc = ""
+            db.all("SELECT * FROM users WHERE id = ?", [interaction.user.id], (err, rows) => {
+                if (err) {
+                    throw err
                 }
-                let embed = new Discord.MessageEmbed()
-                    .setAuthor(interaction.user.username)
-                    .setTitle("Reminder")
-                    .setColor(config.colors.yes)
-                    .setDescription(fields);
-
-                    interaction.reply({embeds: [embed]});
-            }
+                if(rows[0]){
+                    if(rows[0]["promemoria"] != ""){
+                        for(let i in rows[0]["promemoria"].split("|")){
+                            desc += `**${parseInt(i)+1}**. ${rows[0]["promemoria"].split("|")[parseInt(i)]}\n`
+                        }
+                    }else{desc="Your database is empty"}
+                    return msg({
+                        interaction,
+                        title: ":ledger: Reminder :ledger:",
+                        description: desc,
+                        author: interaction.user.username
+                    })
+                }else{
+                    db.run("INSERT INTO users (id, promemoria) VALUES (?, ?)", [interaction.user.id, ""], (err) => {
+                        if (err) {
+                            throw err
+                        }
+                        return msg({
+                            interaction,
+                            title: "Database created successfully!",
+                            ephemeral: true
+                        })
+                    })
+                }
+            })
         }
-        else if(istruction != "" && thing != ""){
-            const data = JSON.parse(fs.readFileSync("./databases/reminder.json", "utf8"));
-            if (!data[interaction.user.id]) {
-                return interaction.reply(`You cannot execute functions unless you have created the database first. Run '**${config.prefix}reminder**' to create it`)
-            }
-            function arrayRemove(arr, value) {
-                return arr.filter(function (ele) {return ele != value});
-            }
-            if (istruction == "add") {
-                data[interaction.user.id].push(thing);
-                fs.writeFileSync("./databases/reminder.json", JSON.stringify(data));
-                return interaction.reply(`'***${thing}***' added successfully to your database`)
-            } else if (istruction == "remove") {
-                const ray = data[interaction.user.id];
-                if (!ray.includes(thing)) return interaction.reply(`'***${thing}***' element doesn't exist in your database`)
-                const newRay = arrayRemove(ray, thing);
-                data[interaction.user.id] = newRay;
-                fs.writeFileSync("./databases/reminder.json", JSON.stringify(data));
-                return interaction.reply(`'***${thing}***' removed successfully to your database`)
-            } else {
-                return interaction.reply({content: `'***${istruction}***' not a function`, ephemeral: true})
-            }
+        else if(istruction != undefined && thing != undefined){
+            if(istruction!='add' && istruction!='remove') return msg({
+                interaction,
+                color: "RED",
+                title: `'${istruction}' is not a function`,
+                ephemeral: true
+            })
+            if(thing.includes("|")) return msg({
+                interaction,
+                color: "RED",
+                title: "The character '|' cannot be entered",
+                ephemeral: true
+            })
+            db.all("SELECT promemoria FROM users WHERE id = ?", [interaction.user.id], (err, rows) => {
+                if (err) {
+                    throw err
+                }
+                if(!rows[0]["promemoria"]){
+                    return msg({
+                        interaction,
+                        color: "RED",
+                        title: `Unable to execute actions without having created the database -> ${config.prefix}reminder`,
+                        ephemeral: true
+                    })
+                }
+                let things = rows[0]["promemoria"].split("|")
+                if(istruction=="remove"){
+                    if(!parseInt(thing)) return msg({
+                        interaction,
+                        color: "RED",
+                        title: "You need to enter the index of the element you want to delete",
+                        ephemeral: true
+                    })
+                    if(parseInt(thing)<1 || parseInt(thing)>things.length) return msg({
+                        interaction,
+                        color: "RED",
+                        title: "The index used does not exist",
+                        ephemeral: true
+                    })
+                    things.splice(parseInt(thing)-1, 1)
+                }else{
+                    things.push(thing)
+                }
+                db.run("UPDATE users SET promemoria = ? WHERE id = ?", [things.join("|"), interaction.user.id], (err) => {
+                    if (err) {
+                        throw err
+                    }
+                    return msg({
+                        interaction,
+                        description: (istruction=="add") ? `Added the element '**${thing}**' to your database` : `Removed the index element '**${thing}**' from your database`,
+                        author: interaction.user.username
+                    })
+                })
+            })
         }
-        else if(istruction == "" && thing != ""){
-            return interaction.reply({content: "Please specify the istruction", ephemeral: true})
-        }
-        else{
-            return interaction.reply({content: "Please specify the thing to be inserted/removed", ephemeral: true})
-        }
+        if(istruction!=undefined&&thing==undefined) return msg({
+            interaction,
+            color: "RED",
+            title: "Please specify the thing to be inserted/removed",
+            ephemeral: true
+        })
+        if(istruction==undefined&&thing!=undefined) return msg({
+            interaction,
+            olor: "RED",
+            title: "Please specify the istruction",
+            ephemeral: true
+        })
     }
-};
+}

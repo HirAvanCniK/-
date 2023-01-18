@@ -12,13 +12,11 @@ module.exports = {
   async execute(interaction){
     await interaction.client.application.fetch()
     let inviteLink = interaction.client.application.customInstallURL + "&applications.commands"
-    msg(
+    return msg({
       interaction,
-      [],
-      "",
-      "",
-      `${interaction.client.user.username} invite`,
-      `[INVITE ME NOW](${inviteLink})`
-    )
+      title: `${interaction.client.user.username} invite`,
+      description: `[INVITE ME NOW](${inviteLink})`
+    })
   }
 }
+

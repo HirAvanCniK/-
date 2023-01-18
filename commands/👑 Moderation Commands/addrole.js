@@ -1,3 +1,5 @@
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "addrole",
   description: "Add role of a member",
@@ -25,11 +27,34 @@ module.exports = {
     const user = interaction.options.getUser("user")
     const role = interaction.options.getRole("role")
     var target = interaction.guild.members.cache.get(user.id)
-    if (!interaction.member.permissions.has("MANAGE_ROLES")) return interaction.reply({content: "You don't have permission", ephemeral: true})
-    if (target.roles.cache.has(role.id)) return interaction.reply({content: `${target} already has the role ${role}`, ephemeral: true})
+    if (!interaction.member.permissions.has("MANAGE_ROLES")){
+      return msg({
+        interaction,
+        title: "You don't have permission",
+        ephemeral: true
+      })
+    }
+    if (target.roles.cache.has(role.id)){
+      return msg({
+        interaction,
+        color: "RED",
+        title: `${target} already has the role ${role}`,
+        ephemeral: true
+      })
+    }
     try{
       await target.roles.add(role);
-    }catch{return interaction.reply({content: "I don't have permission", ephemeral: true})}
-    interaction.reply(`${target} received role ${role}`)
+    }catch{
+      return msg({
+        interaction,
+        color: "RED",
+        title: "I don't have permission",
+        ephemeral: true
+      })
+    }
+    return msg({
+      interaction,
+      title: `${target} received role ${role}`
+    })
   }
 }

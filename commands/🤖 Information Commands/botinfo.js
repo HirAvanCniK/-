@@ -125,13 +125,12 @@ module.exports = {
         }
       ]
 
-      msg(
+      return msg({
         interaction,
-        "",
-        fields,
-        interaction.client.user.username,
-        "Stats"
-      )
+        fields: fields,
+        author: interaction.client.user.username,
+        title: "Stats"
+      })
     })
   }
 }

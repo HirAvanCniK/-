@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
+const { msg } = require("../../functions");
 
 module.exports = {
   name: "poll",
@@ -25,6 +26,7 @@ module.exports = {
       .setAuthor(`📋 | ${interaction.guild.name}`)
       .addField("\u200b", msg)
       .setFooter(`From: ${interaction.user.username}`, interaction.user.displayAvatarURL({ dynamic: true }))
+      .setTimestamp()
     const message = await interaction.reply({embeds: [embed], fetchReply: true});
     message.react("✅");
     message.react("❌");

@@ -1,3 +1,5 @@
+const { msg } = require("../../functions");
+
 module.exports = {
   name: "ban",
   description: "Ban an user",
@@ -18,11 +20,36 @@ module.exports = {
   execute(interaction){
     const user = interaction.options.getUser("user")
     var utenteban = interaction.guild.members.cache.get(user.id)
-    if (!interaction.member.permissions.has("BAN_MEMBERS")) return interaction.reply({content: "You don't have permission", ephemeral: true})
-    if (!utenteban?.kickable) {return interaction.reply({ content: "I can't ban this user", ephemeral: true })}
+    if (!interaction.member.permissions.has("BAN_MEMBERS")){
+      return msg({
+        interaction,
+        color: "RED",
+        title: "You don't have permission",
+        ephemeral: true
+      })
+    }
+    if (!utenteban?.kickable){
+      return msg({
+        interaction,
+        color: "RED",
+        title: "I can't ban this user",
+        ephemeral: true
+      })
+    }
     try{
       utenteban.ban()
-    }catch{return interaction.reply({content: "I don't have permission", ephemeral: true})}
+    }catch{
+      return msg({
+        interaction,
+        color: "RED",
+        title: "I don't have permission",
+        ephemeral: true
+      })
+    }
+    return msg({
+      interaction,
+      title: `${utenteban} has been banned`
+    })
     interaction.reply(`${utenteban} has been banned`)
   }
 }

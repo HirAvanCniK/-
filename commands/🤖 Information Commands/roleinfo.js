@@ -34,19 +34,17 @@ module.exports = {
       }
     ]
 
-    msg(
+    return msg({
       interaction,
-      role.color,
-      flds,
-      null,
-      null,
-      `**Role Name:** <@&${role.id}>\n\n**Role ID:** **\`${role.id}\`**\n\n**Role Mentionable:** ${
+      color: role.color,
+      fields: flds,
+      description: `**Role Name:** <@&${role.id}>\n\n**Role ID:** **\`${role.id}\`**\n\n**Role Mentionable:** ${
         role.mentionable
         .toString()
         .replace("true", "Yes")
         .replace("false", "No")}\n\n**Role Members Size:** ${
         role.members.size || 0
       }`
-    )
+    })
   }
 }
