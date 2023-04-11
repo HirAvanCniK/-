@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const Discord = require(`discord.js`);
 const canvacord = require("canvacord");
 const config = require("../../config.json");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "bed",
@@ -15,13 +16,13 @@ module.exports = {
       {
         name: "user_1",
         description: "The first user to bed",
-        type: "USER",
+        type: ApplicationCommandOptionType.User,
         required: true
       },
       {
         name: "user_2",
         description: "The second user to bed",
-        type: "USER",
+        type: ApplicationCommandOptionType.User,
         required: true
       }
     ]

@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: `clear`,
@@ -13,7 +13,7 @@ module.exports = {
       {
         name: "messages",
         description: "Number of messages to delete",
-        type: "INTEGER",
+        type: ApplicationCommandOptionType.Integer,
         required: true
       }
     ]

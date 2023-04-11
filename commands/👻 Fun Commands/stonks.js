@@ -1,6 +1,7 @@
 const Canvas = require("canvas");
 const Discord = require(`discord.js`);
 const config = require("../../config.json");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "stonks",
@@ -14,7 +15,7 @@ module.exports = {
       {
         name: "user",
         description: "The user to stonks",
-        type: "USER",
+        type: ApplicationCommandOptionType.User,
         required: true
       }
     ]

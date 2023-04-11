@@ -1,7 +1,6 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
 const translate = require("translatte");
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "translate",
@@ -15,19 +14,19 @@ module.exports = {
       {
         name: "from",
         description: "The language from translate",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       },
       {
         name: "to",
         description: "The language to translate",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       },
       {
         name: "text",
         description: "The text to translate",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       }
     ]

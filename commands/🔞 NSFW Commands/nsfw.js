@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const fetch = require('node-fetch');
 const { msg } = require('../../functions');
 const config = require("../../config.json");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
     name: "nsfw",
@@ -15,7 +16,7 @@ module.exports = {
         {
           name: "category",
           description: "Category of NSFW",
-          type: "STRING",
+          type: ApplicationCommandOptionType.String,
           required: true
         }
       ]

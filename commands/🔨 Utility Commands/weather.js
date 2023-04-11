@@ -1,6 +1,6 @@
 const weather = require("weather-js");
-const Discord = require("discord.js");
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "weather",
@@ -14,7 +14,7 @@ module.exports = {
       {
         name: "city",
         description: "The city",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       }
     ]

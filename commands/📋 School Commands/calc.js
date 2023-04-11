@@ -1,5 +1,6 @@
 const math = require("math-expression-evaluator");
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "calc",
@@ -13,7 +14,7 @@ module.exports = {
       {
         name: "operation",
         description: "Operation to be solve",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       }
     ]

@@ -1,4 +1,6 @@
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
+
 
 module.exports = {
   name: "roleinfo",
@@ -12,7 +14,7 @@ module.exports = {
       {
         name: "role",
         description: "Role to extract information",
-        type: "ROLE",
+        type: ApplicationCommandOptionType.Role,
         required: true
       }
     ]

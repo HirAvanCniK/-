@@ -1,6 +1,5 @@
-const Discord = require("discord.js");
-const fetch = require("node-fetch");
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "embed",
@@ -14,49 +13,49 @@ module.exports = {
       {
         name: "author",
         description: "The author of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       },
       {
         name: "title",
         description: "The title of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       },
       {
         name: "description",
         description: "The description of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       },
       {
         name: "color",
         description: "The color of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       },
       {
         name: "footer",
         description: "The footer of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       },
       {
         name: "thumbnail",
         description: "The thumbnail of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       },
       {
         name: "image",
         description: "The image of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       },
       {
         name: "url",
         description: "The url of embed",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       }
     ]

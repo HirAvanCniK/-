@@ -1,4 +1,6 @@
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
+
 
 module.exports = {
   name: "userinfo",
@@ -12,7 +14,7 @@ module.exports = {
       {
         name: "user",
         description: "The user to get information",
-        type: "USER",
+        type: ApplicationCommandOptionType.User,
         required: false
       }
     ]

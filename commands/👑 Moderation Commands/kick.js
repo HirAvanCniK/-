@@ -1,4 +1,5 @@
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "kick",
@@ -12,7 +13,7 @@ module.exports = {
       {
         name: "user",
         description: "The user to kick",
-        type: "USER",
+        type: ApplicationCommandOptionType.User,
         required: true
       }
     ]

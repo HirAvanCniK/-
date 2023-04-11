@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
-const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "poll",
@@ -14,7 +14,7 @@ module.exports = {
       {
         name: "polltext",
         description: "The body of the poll",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       }
     ]

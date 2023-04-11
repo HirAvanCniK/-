@@ -1,6 +1,7 @@
 const config = require("../../config.json");
 const sqlite3 = require('sqlite3');
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
     name: "reminder",
@@ -14,13 +15,13 @@ module.exports = {
             {
                 name: "istruction",
                 description: "What do you do",
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 required: false
             },
             {
                 name: "object",
                 description: "The object to be added/removed",
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 required: false
             }
         ]

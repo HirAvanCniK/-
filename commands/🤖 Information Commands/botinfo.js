@@ -21,11 +21,6 @@ module.exports = {
       }
       const duration = moment.duration(interaction.client.uptime).format("D [days], H [hrs], m [mins], s [secs]");
 
-      let connectedchannelsamount = 0;
-      let guilds = interaction.client.guilds.cache.map((guild) => guild);
-      for (let i = 0; i < guilds.length; i++) {
-        if (guilds[i].me.voice.channel) connectedchannelsamount += 1;
-      }
   
       let fields = [
         {
@@ -55,23 +50,6 @@ module.exports = {
         {
           name: "📁 Servers",
           value: `\`${interaction.client.guilds.cache.size}\``,
-          inline: true
-        },
-        {
-          name: "\u200b",
-          value: `\u200b`,
-          inline: true
-        },
-        {
-          name: "📁 Voice-Channels",
-          value: `\`${
-            interaction.client.channels.cache.filter((ch) => ch.type === "voice").size
-          }\``,
-          inline: true
-        },
-        {
-          name: "📁 Connected Channels",
-          value: `\`${connectedchannelsamount}\``,
           inline: true
         },
         {

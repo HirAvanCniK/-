@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const config = require("../../config.json");
 const Discord = require(`discord.js`);
 const canvacord = require("canvacord");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "trigger",
@@ -15,7 +16,7 @@ module.exports = {
       {
         name: "user",
         description: "The user to trigger",
-        type: "USER",
+        type: ApplicationCommandOptionType.User,
         required: true
       }
     ]

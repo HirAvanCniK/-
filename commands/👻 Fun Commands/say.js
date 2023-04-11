@@ -1,4 +1,5 @@
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "say",
@@ -12,7 +13,7 @@ module.exports = {
       {
         name: "text",
         description: "The text to say",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       }
     ]

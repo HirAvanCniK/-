@@ -1,26 +1,37 @@
 const config = require("./config.json");
-const { Client, Collection, MessageEmbed } = require('discord.js');
+const { Client, Collection, EmbedBuilder, GatewayIntentBits, ApplicationCommandOptionType } = require('discord.js');
 const fs = require("fs");
 const { msg } = require("./functions.js")
 require("colors");
 const client = new Client({
-  intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_INTEGRATIONS", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildIntegrations,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildVoiceStates
+  ],
   partials: ["MESSAGE", "CHANNEL", "REACTION"]
 });
 
-const { DisTube } = require("distube")
+exports.ApplicationCommandOptionType = ApplicationCommandOptionType;
+
+const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
+const { YtDlpPlugin } = require("@distube/yt-dlp");
 
-const distube = new DisTube(client, {
-  youtubeDL: false,
-  plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+global.distube = new DisTube(client, {
+  plugins: [new SpotifyPlugin(), new SoundCloudPlugin(), new YtDlpPlugin({ update: true })],
   leaveOnEmpty: true,
   leaveOnStop: true,
   leaveOnFinish: true,
-  emitNewSongOnly: true,
-  nsfw: true
+  // emitNewSongOnly: true,
+  // nsfw: true
 })
+
+// exports.distube = distube;
 
 let stateswitch = false;
 
@@ -178,7 +189,7 @@ client.on("interactionCreate", interaction => {
 
 // Respond select help menu
 client.on('interactionCreate', interaction => {
-  if (!interaction.isSelectMenu()) return;
+  if (!interaction.isStringSelectMenu()) return;
   let commandsName = [];
   let dir = interaction.values[0];
   const commands = fs.readdirSync(`./commands/${dir}/`).filter((file) =>
@@ -188,375 +199,16 @@ client.on('interactionCreate', interaction => {
     let pull = require(`./commands/${dir}/${file}`);
     commandsName.push(pull.name)
   }
-  var embed = new MessageEmbed()
-    .setTitle(dir)
-    .setDescription("➤ ***" + commandsName.join("***\n➤ ***") + "***")
-  interaction.reply({embeds: [embed], ephemeral: true})
+  return msg({
+    interaction: interaction,
+    title: dir,
+    description: "➤ ***" + commandsName.join("***\n➤ ***") + "***",
+    ephemeral: true
+  })
 });
 
-// Music commands
-client.on("interactionCreate", interaction => {
-  if (!interaction.isCommand()) return 
-  var interactionEmbed = new MessageEmbed().setColor(config.colors.yes).setTimestamp()
-  if (interaction.commandName == "play"){
-    const song = interaction.options.getString("song")
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-    
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(interaction.client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-    
-    let queue = distube.getQueue(interaction)
-    if (queue){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Song already running",
-        ephemeral: true
-      })
-    }
-
-    distube.play(voiceChannelBot || voiceChannel, song, {
-        member: interaction.member,
-        textChannel: interaction.channel,
-        message: interaction.message
-    })
-
-    interactionEmbed.setTitle(`🎶 Searching... 🎶\n\`${song}\``)
-
-    interaction.reply({embeds: [interactionEmbed]})
-  }
-  if (interaction.commandName == "stop"){
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    try{
-      distube.stop(interaction).then(() => {
-        interactionEmbed.setTitle("✅ Stop songs successfully")
-        return interaction.reply({embeds: [interactionEmbed]})
-      }).catch(() => {
-        interactionEmbed.setTitle("❌ No songs playing").setColor("RED")
-        return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-      })
-    } catch {
-      interactionEmbed.setTitle("❌ No songs playing").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  }
-  if (interaction.commandName == "pause"){
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    try{
-      distube.pause(interaction)
-      interactionEmbed.setTitle("✅ Song paused")
-      return interaction.reply({embeds: [interactionEmbed]})
-    } catch {
-      interactionEmbed.setTitle("❌ No song playing or song already paused").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  }
-  if (interaction.commandName == "resume"){
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    try{
-      distube.resume(interaction)
-      interactionEmbed.setTitle("✅ Song resumed")
-      return interaction.reply({embeds: [interactionEmbed]})
-    } catch {
-      interactionEmbed.setTitle("❌ No song playing or song already playing").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  }
-  if (interaction.commandName == "skip"){
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    try{
-      distube.skip(interaction).then(() => {
-        interactionEmbed.setTitle("✅ Song skipped")
-        return interaction.reply({embeds: [interactionEmbed]})
-      }).catch(() => {
-        interactionEmbed.setTitle("❌ No song playing or next song not present").setColor("RED")
-        return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-      })
-    } catch {
-      interactionEmbed.setTitle("❌ No song playing or next song not present").setColo("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  }
-  if (interaction.commandName == "previous"){
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    try{
-      distube.previous(interaction).then(() => {
-        interactionEmbed.setTitle("✅ Previous song")
-        return interaction.reply({embeds: [interactionEmbed]})
-      }).catch(() => {
-        interactionEmbed.setTitle("❌ No song playing or previous song not present").setColor("RED")
-        return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-      })
-    } catch {
-      interactionEmbed.setTitle("❌ No song playing or previous song not present").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  }
-  if (interaction.commandName == "queue"){
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    let queue = distube.getQueue(interaction)
-
-    if (!queue){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Empty queue",
-        ephemeral: true
-      })
-    }
-
-    var description = ""
-    var index = 0
-    for (let song in queue.songs){
-      index++
-      description += `**${index}.** ${queue.songs[song].name} ***${queue.songs[song].formattedDuration}***\n`
-    }
-
-    let embed = new MessageEmbed()
-      .setTitle(":cyclone: Queue :cyclone:")
-      .setDescription(description)
-      .setColor(config.colors.yes)
-
-    interaction.reply({embeds: [embed]})
-  }
-  if (interaction.commandName == "volume"){
-    const volume = interaction.options.getInteger("volume")
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    if (volume < 0){
-      interactionEmbed.setTitle("❌ The minimum value of the volume is 0").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-    if (volume > 100){
-      interactionEmbed.setTitle("❌ The maximum value of the volume is 100").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  
-    try{
-      distube.setVolume(interaction, volume)
-      interactionEmbed.setTitle(`✅ Volume set at \`${volume}%\``)
-      return interaction.reply({embeds: [interactionEmbed]})
-    } catch {
-      interactionEmbed.setTitle("❌ No song playing").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  }
-  if (interaction.commandName == "loop"){
-    const what = interaction.options.getInteger("loop")
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    if (what != 0 && what != 1 && what != 2){
-      return msg({
-        interaction,
-        color: "RED",
-        title: `The argument '**${what}**' does not exist\n(0) Remove loop\n(1) Loop at song\n(2) Loop at queue`,
-        ephemeral: true
-      })
-    }
-
-    try{
-      distube.setRepeatMode(interaction, what)
-      if (what == 0) interactionEmbed.setTitle(`✅ Loop removed`)
-      else if (what == 1) interactionEmbed.setTitle(`✅ Loop set at song`)
-      else interactionEmbed.setTitle(`✅ Loop set at queue`)
-      return interaction.reply({embeds: [interactionEmbed]})
-    } catch {
-      interactionEmbed.setTitle("❌ No song playing").setColor("RED")
-      return interaction.reply({embeds: [interactionEmbed], ephemeral: true})
-    }
-  }
-  if (interaction.commandName == "status"){
-    const voiceChannel = interaction.member.voice.channel
-    if (!voiceChannel){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "You must be in a voice channel",
-        ephemeral: true
-      })
-    }
-
-    const voiceChannelBot = interaction.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
-    if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id){
-      return msg({
-        interaction,
-        color: "RED",
-        title: "Someone else is already listening to music",
-        ephemeral: true
-      })
-    }
-
-    let queue = distube.getQueue(interaction)
-    console.log(queue.formattedCurrentTime)
-  }
-})
-
 // distube.on("addSong", (queue, song) => {
-//   let embed = new MessageEmbed()
+//   let embed = new EmbedBuilder()
 //       .setTitle("Song added")
 //       .addField("Song", song.name)
 
@@ -569,7 +221,7 @@ distube.on("playSong", (queue, song) => {
   else if (queue.volume < 20) volume = ":speaker:"
   else if (queue.volume <= 50) volume = ":sound:"
   else volume = ":loud_sound:"
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
       .setTitle("🎧 Playing song 🎧")
       .setThumbnail(song.thumbnail)
       .addFields(

@@ -2,7 +2,8 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const config = require("../../config.json");
 const { msg } = require("../../functions");
-const { title } = require("process");
+const { ApplicationCommandOptionType } = require('../../index');
+
 
 module.exports = {
   name: "help",
@@ -16,7 +17,7 @@ module.exports = {
       {
         name: "command",
         description: "The command to see help",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: false
       }
     ]
@@ -55,8 +56,8 @@ module.exports = {
       })
     } else {
       let commandsName = {};
-      var row = new Discord.MessageActionRow()
-      let messageMenu = new Discord.MessageSelectMenu().setCustomId("helpMenu").setPlaceholder("📑 Help menu 📑")
+      var row = new Discord.ActionRowBuilder()
+      let messageMenu = new Discord.StringSelectMenuBuilder().setCustomId("helpMenu").setPlaceholder("📑 Help menu 📑")
       var options = []
       fs.readdirSync("./commands/").forEach((dir) => {
         const commands = fs.readdirSync(`./commands/${dir}/`).filter((file) =>

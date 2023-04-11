@@ -1,8 +1,6 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
 const fetch = require("node-fetch");
 const { msg } = require("../../functions");
-const { getResponseHeaders } = require("distube");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "wikipedia",
@@ -16,7 +14,7 @@ module.exports = {
       {
         name: "query",
         description: "Thing to search",
-        type: "STRING",
+        type: ApplicationCommandOptionType.String,
         required: true
       }
     ]

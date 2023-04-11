@@ -1,4 +1,5 @@
 const { msg } = require("../../functions");
+const { ApplicationCommandOptionType } = require('../../index');
 
 module.exports = {
   name: "random",
@@ -12,13 +13,13 @@ module.exports = {
       {
         name: "min",
         description: "Minimum number",
-        type: "INTEGER",
+        type: ApplicationCommandOptionType.Integer,
         required: true
       },
       {
         name: "max",
         description: "Maximum number",
-        type: "INTEGER",
+        type: ApplicationCommandOptionType.Integer,
         required: true
       }
     ]
