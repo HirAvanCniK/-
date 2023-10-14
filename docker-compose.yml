@@ -1,0 +1,7 @@
+version: '3'
+services:
+  bot:
+    image: node
+    command: sh -c "cd /bot && npm install && node ."
+    volumes:
+      - ".:/bot/"

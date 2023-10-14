@@ -3,6 +3,7 @@ const { Client, Collection, EmbedBuilder, GatewayIntentBits, ApplicationCommandO
 const fs = require("fs");
 const { msg } = require("./functions.js")
 require("colors");
+require("dotenv").config();
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -10,7 +11,8 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildIntegrations,
     GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.GuildVoiceStates
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMessageReactions
   ],
   partials: ["MESSAGE", "CHANNEL", "REACTION"]
 });
@@ -134,7 +136,7 @@ client.on("interactionCreate", interaction => {
     setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
   }
   try{
-    command.execute(interaction)
+    command.execute(interaction);
     var date = new Date();
     let year = date.getFullYear();
     let month = date.getMonth();
@@ -260,4 +262,4 @@ distube.on("searchNoResult", (message, query) => {
 })
 
 // Login
-client.login(config.token);
+client.login(process.env.TOKEN);
