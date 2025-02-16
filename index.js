@@ -1,7 +1,7 @@
 const config = require("./config.json");
 const { Client, Collection, EmbedBuilder, GatewayIntentBits, ApplicationCommandOptionType } = require('discord.js');
 const fs = require("fs");
-const { msg } = require("./functions.js")
+const { msg } = require("./functions.js");
 require("colors");
 require("dotenv").config();
 const client = new Client({
